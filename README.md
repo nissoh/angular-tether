@@ -4,9 +4,10 @@ This project is currently under going development for my own needs. if you want 
 
 
 Extending angular tether roadmap in current development.
-[x] Tooltip
-[ ] Modal
-[ ] Popover
-[ ] Menu
-
+```
+[x] Tooltip.
+[ ] Modal.
+[ ] Popover.
+[ ] Menu.
+```
 
