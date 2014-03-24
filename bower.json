@@ -1,7 +1,7 @@
 {
   "name": "angular-tether",
   "version": "0.0.1",
-  "main": "./dist/angular-tether.min.js",
+  "main": "./dist/angular-tether.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/remind101/angular-modal.git"
@@ -14,6 +14,21 @@
   "ignore": [
     "node_modules",
     "bower_components",
-    "lib"
-  ]
+    "lib",
+    "**/.*",
+    "test",
+    "tests",
+    ".tmp"
+  ],
+  "homepage": "https://github.com/nissoh/angular-tether",
+  "authors": [
+    "nissan hanina <sky@nisan.co>"
+  ],
+  "description": "extensible port of tether made in angular",
+  "keywords": [
+    "tether",
+    "angular",
+    "angular-tooltip"
+  ],
+  "license": "MIT"
 }

@@ -33,15 +33,13 @@ module.exports = function (grunt) {
       }
     },
     connect: {
-      options: {
-        port: 9000,
-        // Change this to '0.0.0.0' to access the server from outside.
-        hostname: 'localhost'
-      },
-      livereload: {
+      dev: {
         options: {
+          livereload : 35729,
+          port: 8080,
+          hostname: 'localhost',
           base: [
-            'examples'
+            'src'
           ]
         }
       }
@@ -87,7 +85,7 @@ module.exports = function (grunt) {
       }
     },
     concurrent: {
-      tasks: ['connect', 'watch'],
+      tasks: ['connect:dev:keepalive', 'watch'],
       options: {
         logConcurrentOutput: true
       }
@@ -98,7 +96,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('dev', [
     'watch',
-    'connect:dev'
+    'connect:dev:keepalive'
   ]);
 
   grunt.registerTask('build', [
