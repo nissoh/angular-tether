@@ -12,12 +12,39 @@
   <script src="../bower_components/tether/tether.js"></script>
   <script src="../src/angular-tether.js"></script>
   <script src="../src/angular-tether-tooltip.js"></script>
+  <script src="../src/angular-tether-popover.js"></script>
 
   <script src="appctrl.js"></script>
+
+  <link rel="stylesheet" href="styles/main.css"/>
 </head>
 <body ng-app="app">
   <div ng-controller="appCtrl" style="padding: 150px; text-align: center;">
-    <a href="" tether-tooltip="fff" tether-tooltip-config="{ff:'fff'}">hover</a>
+    <!--<a href="" tether-tooltip="fff" tether-tooltip-config="{ff:'fff'}">hover</a>-->
+
+
+    <div style="padding: 70px; background-color: #ceffee; display: inline-block;"
+            tether-popover="hello world"
+            popover-config="popoverConfig"
+            shared-locals="sharedLocalsWithCtrlPopover">
+
+      <div>
+        position
+        <div>
+          <input ng-model="sharedLocalsWithCtrlPopover.tether.targetAttachment" type="text"/>
+        </div>
+        <div>
+          <button ng-click="sharedLocalsWithCtrlPopover.enter({content: 'ddd'})" ng-disabled="sharedLocalsWithCtrlPopover.isActive()">enter</button>
+          <button ng-click="sharedLocalsWithCtrlPopover.leave()" ng-disabled="!sharedLocalsWithCtrlPopover.isActive()">leave</button>
+        </div>
+      </div>
+
+            </div>
+
+    <select ng-model="attachmentX" ng-options="pos for pos in posX"></select>
+    <select ng-model="attachmentY" ng-options="pos for pos in posY"></select>
+
+
 
     <!--<button ng-click="tether.active() ? tether.deactivate() : tether.activate() ">tether</button>-->
   </div>

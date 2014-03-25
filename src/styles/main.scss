@@ -1,0 +1,25 @@
+/*
+	==== Strings Dev-draft =======================================
+	     Author: Nissan Hanina
+	==============================================================
+*/
+
+// IE compatibility
+// ----------------
+$ie8: true;
+$ie9: true;
+
+// Site direction
+// -----------------
+$htmlDirection: rtl !default;
+
+
+@import "strings/core/mixins";
+@import "strings/generic/flexbox";
+@import "strings/generic/layout";
+
+@include spaceBox("tiny", "5px");
+@include spaceBox("small", "10px");
+@include spaceBox("regular", "20px");
+@include spaceBox("medium", "30px");
+@include spaceBox("large", "50px");

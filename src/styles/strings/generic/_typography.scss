@@ -1,0 +1,227 @@
+//
+// Typography
+// --------------------------------------------------
+
+
+$textColor: $darkGrey !default;
+
+@font-face{
+	font-family:'almoni-dl';
+	font-weight:400; /*(regular)*/
+	font-style: normal;
+	src: url('fonts/almoni-dl-aaa-400.eot');
+	src: url('fonts/almoni-dl-aaa-400.eot?#iefix') format('embedded-opentype'),
+	url('fonts/almoni-dl-aaa-400.ttf') format('truetype'),
+	url('fonts/almoni-dl-aaa-400.woff') format('woff'),
+	url('fonts/almoni-dl-aaa-400.svg#almoni-dl-regular') format('svg');
+}
+@font-face{
+	font-family:'almoni-dl';
+	font-weight:300; /*(regular)*/
+	font-style: normal;
+	src: url('fonts/almoni-dl-aaa-300.eot');
+	src: url('fonts/almoni-dl-aaa-300.eot?#iefix') format('embedded-opentype'),
+	url('fonts/almoni-dl-aaa-300.ttf') format('truetype'),
+	url('fonts/almoni-dl-aaa-300.woff') format('woff'),
+	url('fonts/almoni-dl-aaa-300.svg#almoni-dl-regular') format('svg');
+}
+
+// Links
+// -------------------------
+$linkColor:             $cyan !default;
+$linkColorHover:        darken($cyan, 10%) !default;
+
+$sansFontFamily: "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$arialFontFamily: Arial, sans-serif !default;
+$serifFontFamily: Georgia, "Times New Roman", Times, serif !default;
+$monoFontFamily: Menlo, Monaco, Consolas, "Courier New", monospace !default;
+
+// Base
+$baseFontSize: 12px !default;
+$baseFontFamily: 'almoni-dl', Arial, sans-serif !default;
+$baseLineHeight: 1.5 !default;
+$altFontFamily: $serifFontFamily !default;
+
+// Headings
+$headingsFontFamily:    inherit !default; // empty to use BS default, $baseFontFamily
+$headingsFontWeight:    bold !default;    // instead of browser default, bold
+$headingsColor:         inherit !default; // empty to use BS default, $textColor
+
+// Spacing
+$TypeBaseSpacing : 10px;
+
+// Body text
+// -------------------------
+
+p {
+	margin: 0 0 1em;
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.lead {
+	margin-bottom: $baseLineHeight;
+	font-size: $baseFontSize * 1.5;;
+	font-weight: 200;
+	line-height: $baseLineHeight * 1.5;
+}
+
+
+// Emphasis & misc
+// -------------------------
+
+// Ex: 14px base font * 85% = about 12px
+small, .small   { font-size: 85%; }
+
+strong, .strong  { font-weight: bold; }
+light  { font-weight: lighter; }
+.italic      { font-style: italic; }
+
+.text-rev { text-align: htmlDirection-rev(); }
+.text-center { text-align: center; }
+.text-lineHeightNormal { line-height: 1; }
+
+
+// Text Color
+// -------------------------
+$warningText: #de4e53 !default;
+$warningBackground: #fcf8e3 !default;
+$warningBorder: darken(adjust-hue($warningBackground, -10), 3%) !default;
+
+$errorText: $red !default;
+$errorBackground: #ffe5e5 !default;
+$errorBorder: darken($errorBackground, 3%) !default;
+
+$successText: #1B371B !default;
+$successBackground: #e8f9e2 !default;
+$successBorder: darken(adjust-hue($successBackground, -10), 5%) !default;
+
+$infoText: $blue !default;
+$infoBackground: #dbf2fd !default;
+$infoBorder: darken(adjust-hue($infoBackground, -10), 7%) !default;
+
+// Utility classes
+.muted               { color: $grayLight; }
+a.muted:hover        { color: darken($grayLight, 10%); }
+
+.text-warning        { color: $warningText; }
+a.text-warning:hover { color: darken($warningText, 10%); }
+
+.text-error          { color: $errorText !important; }
+a.text-error:hover   { color: darken($errorText, 10%); }
+
+.text-info           { color: $infoText; }
+a.text-info:hover    { color: darken($infoText, 10%); }
+
+.text-success        { color: $successText; }
+a.text-success:hover { color: darken($successText, 10%); }
+
+
+// Headings
+// -------------------------
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 0 0 0.4em;
+	font-family: $headingsFontFamily;
+	font-weight: $headingsFontWeight;
+	line-height: $baseLineHeight;
+	color: rgba(255, 165, 0, 0.50);
+	text-rendering: optimizelegibility;
+
+	text-shadow: 1px 1px rgba(66, 66, 66, 0.13);
+
+
+	small {
+		font-weight: normal;
+		line-height: 1;
+		color: $gray;
+	}
+}
+
+h1, .fs1 { font-size: 55px; }
+h2, .fs2 { font-size: 31px; }
+h3, .fs3 { font-size: 25px; }
+h4, .fs4 { font-size: 19px; }
+h5, .fs5 { font-size: 17px; }
+h5, .fs6 { font-size: 14px; }
+h6, .fs7 { font-size: 11px; }
+.fs8 { font-size: 10px; }
+.fs9 { font-size: 18px; }
+.fs10 { font-size: 15px; }
+
+h1 small { font-size: 24px; }
+h2 small { font-size: 18px; }
+
+
+
+// Lists
+// --------------------------------------------------
+
+// Unordered and Ordered lists
+ul, ol {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+ol.styled { list-style: decimal; }
+
+ul.styled, ol.styled {
+	list-style: disc;
+	margin-left: 15px;
+	padding-left: 20px;
+}
+
+
+// MISC
+// ----
+
+// Horizontal rules
+hr {
+	width: 100%;
+	border: 0;
+	height: 1px;
+	background-color: $grayLighter;
+}
+
+// Blockquotes
+blockquote {
+	padding: 0 0 0 15px;
+	margin: 0 0 $baseLineHeight;
+	border-left: 5px solid $gray;
+	p {
+		margin-bottom: 0;
+		@include font-shorthand(16px, 300, $baseLineHeight * 1.25);
+	}
+	small {
+		display: block;
+		line-height: $baseLineHeight;
+		color: $grayLight;
+		&:before {
+			content: '\2014 \00A0';
+		}
+	}
+
+	// Float right with text-align: right
+	&.pull-right {
+		float: right;
+		padding-right: 15px;
+		padding-left: 0;
+		border-right: 5px solid $gray;
+		border-left: 0;
+		p, small {
+			text-align: right;
+		}
+		small {
+			&:before {
+				content: '';
+			}
+			&:after {
+				content: '\00A0 \2014';
+			}
+		}
+	}
+}
+
+

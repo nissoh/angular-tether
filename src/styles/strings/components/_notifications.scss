@@ -1,0 +1,116 @@
+// ALERT STYLES
+// ------------
+
+// Base alert styles
+.alert {
+	text-align: left;
+	padding: 8px 14px 8px 14px;
+	margin-bottom: $baseLineHeight;
+	text-shadow: 0 1px 0 rgba(255,255,255,.5);
+	background-color: $warningBackground;
+	border: 2px solid $warningBorder;
+	color: $warningText;
+	position: relative;
+	margin-bottom: 14px;
+
+	&.ui-dialog {
+		-webkit-box-shadow: 7px 8px 0px rgba(0, 0, 0, 0.05), 7px 8px 0px 2px rgba(0, 0, 0, 0.14);
+		-moz-box-shadow: 7px 8px 0px rgba(0, 0, 0, 0.05), 7px 8px 0px 2px rgba(0, 0, 0, 0.14);
+		box-shadow: 7px 8px 0px rgba(0, 0, 0, 0.05), 7px 8px 0px 2px rgba(0, 0, 0, 0.14);
+	}
+	&.alert-success {
+		background-color: $successBackground;
+		border-color: $successBorder;
+		color: $successText;
+	}
+	&.alert-error {
+		background-color: $errorBackground;
+		border-color: $errorBorder;
+		color: $errorText;
+	}
+	&.alert-warning {
+		background-color: $warningBackground;
+		border-color: $warningBorder;
+		color: $warningText;
+	}
+	&.alert-info {
+		background-color: $infoBackground;
+		border-color: $infoBorder;
+		color: $infoText;
+	}
+
+	&.info-icon-indicator:before {
+		background-color: $infoBackground;
+		border: 2px solid $infoBorder;
+		color: $infoText;
+	}
+	&.error-icon-indicator:before {
+		background-color: $errorBackground;
+		border: 2px solid $errorBorder;
+		color: $errorText;
+	}
+	&.warning-icon-indicator:before {
+		background-color: $warningBackground;
+		border: 2px solid $warningBorder;
+		color: $warningText;
+    }
+	&[class*="-icon-indicator"] {
+		padding-left: 30px;
+	}
+	&[class*="-icon-indicator"]:before {
+		line-height: 0;
+		font-family: 'ui-icons';
+		font-style: normal;
+		speak: none;
+		position: absolute;
+		top: -8px;
+		left: -8px;
+		width: 30px;
+		height: 16px;
+		border-radius: 50%;
+		padding-top: 14px;
+		font-size: 20px;
+		text-align: center;
+	}
+
+	@media not screen and (1)
+	{
+		&[class*="-icon-indicator"]:before {
+			height: 17px;
+			padding-top: 13px;
+		}
+	}
+
+
+	.alert-heading {
+		color: inherit;
+	}
+
+	// Adjust close link position
+	.alert .close {
+		position: relative;
+		top: -2px;
+		right: -21px;
+		line-height: 18px;
+	}
+}
+
+// Alternate styles
+// ----------------
+
+
+
+
+
+// Block alerts
+// ------------------------
+.alert-block {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.alert-block > p, .alert-block > ul {
+  margin-bottom: 0;
+}
+.alert-block p + p {
+  margin-top: 5px;
+}

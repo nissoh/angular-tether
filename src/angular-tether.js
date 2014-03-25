@@ -12,31 +12,23 @@ angular.module('ngTether', [])
       var template    = config.template,
         controller    = config.controller || angular.noop,
         controllerAs  = config.controllerAs,
+        parentScope   = config.parentScope || $rootScope,
         extend        = angular.extend,
         target        = angular.element(config.tether.target || document.body),
         element       = null,
-        html, tether;
+        scope, html, tether;
 
 
-      var defaultConfig = {
-        attachment: 'top middle',
-        targetAttachment: 'bottom middle',
-        constraints: [
-          {
-            to: 'window',
-            attachment: 'together'
-          }
-        ]
-      };
 
-      extend(defaultConfig, config.tether);
+
 
       // Attach a tether element and the target element.
-      function attachTether() {
+      function attachTether(configChange) {
         tether = new Tether(extend({
           element: element[0],
           target: target[0]
-        }, defaultConfig));
+        }, configChange || config));
+        tether.position();
       }
 
       if (config.template) {
@@ -54,20 +46,23 @@ angular.module('ngTether', [])
 
       function create(html, locals) {
         element = angular.element(html);
-        var scope = $rootScope.$new();
+        scope = parentScope.$new();
         if (locals) {
           for (var prop in locals) {
             scope[prop] = locals[prop];
           }
         }
+
+        scope.$on('$destroy', function(){
+        });
         var ctrl = $controller(controller, { $scope: scope });
         if (controllerAs) {
           scope[controllerAs] = ctrl;
         }
         $compile(element)(scope);
-
-        $animate.enter(element, null, target);
+        
         attachTether();
+        $animate.enter(element, null, target);
       }
 
       // Attach tether and add it to the dom
@@ -85,7 +80,12 @@ angular.module('ngTether', [])
       // Detach the tether and remove it from the dom
       function leave() {
         if (element) {
-          $animate.leave(element);
+          $animate.leave(element, function(){
+            element = null;
+            scope.$apply(function(){
+              scope.$destroy();
+            });
+          });
         }
       }
 
@@ -98,7 +98,8 @@ angular.module('ngTether', [])
       return {
         enter: enter,
         leave: leave,
-        isActive: isActive
+        isActive: isActive,
+        tether : config
       };
     };
   });

@@ -1,0 +1,154 @@
+/*! normalize.css v2.1.2 | MIT License | git.io/normalize */
+
+/* ==========================================================================
+   HTML5 display definitions
+   ========================================================================== */
+
+/**
+ * Correct `block` display not defined in IE 8/9.
+ */
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+	display: block;
+}
+
+// Display block in IE6-9 and FF3
+// -------------------------
+
+audio, canvas, video {
+	display: inline-block;
+}
+
+// Prevents modern browsers from displaying 'audio' without controls
+// Remove excess height in iOS 5 devices.
+// -------------------------
+
+audio:not([controls]) {
+	display: none;
+	height: 0;
+}
+
+// Base settings
+// -------------------------
+// Set default font family to sans-serif.
+// Prevent iOS text size adjust after orientation change, without disabling user zoom.
+
+html {
+	font-family: sans-serif;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+
+
+
+// Hover & Active
+a:hover, a:active, a:focus { outline: 0; }
+
+// Prevents sub and sup affecting line-height in all browsers
+// -------------------------
+
+sub, sup {
+	position: relative;
+	font-size: 75%;
+	line-height: 0;
+	vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+	bottom: -0.25em;
+}
+
+// Img border in a's and image quality
+// -------------------------
+
+img {
+  max-width: 100%; // Make images inherently responsive
+  height: auto; // Make images inherently responsive
+	vertical-align: middle;
+	border: 0;
+	-ms-interpolation-mode: bicubic;
+}
+
+// Prevent max-width from affecting Google Maps
+#mapCanvas label { width: auto; display:inline; }
+#mapCanvas img { max-width: none; }
+
+// Selections
+// ---------------------------------------------------
+::selection {
+	color: $selectionColor;
+	background: $selectionBackgroundColor;
+}
+
+::-moz-selection {
+	color: $selectionColor;
+	background: $selectionBackgroundColor;
+}
+
+::-webkit-selection {
+	color: $selectionColor;
+	background: $selectionBackgroundColor;
+}
+
+// Center Align container
+// -------------------------
+
+
+// Forms
+// -------------------------
+// 1. Correct font family not being inherited in all browsers.
+// 2. Correct font size not being inherited in all browsers.
+// 3. Address margins set differently in Firefox 4+, Safari 5, and Chrome.
+button, input, select, textarea {
+	font-family: inherit; /* 1 */
+	font-size: 100%; /* 2 */
+	margin: 0; /* 3 */
+}
+
+button, input {
+	line-height: normal;
+}
+
+button::-moz-focus-inner, input::-moz-focus-inner {
+	// Inner padding and border oddities in FF3/4
+	padding: 0;
+	border: 0;
+}
+
+
+input[type="search"] { // Appearance in Safari/Chrome
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+          box-sizing: content-box;
+	-webkit-appearance: textfield;
+}
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button {
+	-webkit-appearance: none;
+	// Inner-padding issues in Chrome OSX, Safari 5
+}
+textarea {
+	overflow: auto;
+	// Remove vertical scrollbar in IE6-9
+	vertical-align: top;
+	resize: vertical;
+	// Readability and alignment cross-browser
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+ 
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+}
+

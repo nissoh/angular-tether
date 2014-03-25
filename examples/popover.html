@@ -1,0 +1,14 @@
+<div class="Spacebox__small" style="background-color: #daf3ff">
+
+  <div> position
+    <div><input ng-model="sharedLocals.tether.attachment" type="text"/></div>
+    <div>
+      <button ng-click="sharedLocals.enter({content: 'ddd'})"
+              ng-disabled="sharedLocals.isActive()">enter
+      </button>
+      <button ng-click="sharedLocals.leave()" ng-disabled="!sharedLocals.isActive()">leave
+      </button>
+    </div>
+  </div>
+
+</div>

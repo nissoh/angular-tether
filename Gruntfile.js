@@ -8,15 +8,22 @@ module.exports = function (grunt) {
     paths : {
       src : "src",
       dist : "dist",
+      demo : "examples",
       tmp : ".tmp"
     },
     watch: {
       sass: {
-        files: ['<%= paths.src %>/css/*.scss'],
+        files: ['<%= paths.src %>/styles/*.scss'],
         tasks: ['sass:server']
       },
-      js: {
-        files: ['<%= paths.src %>/**/.js'],
+      src: {
+        files: ['<%= paths.src %>/**/*.js'],
+        options: {
+          livereload: true
+        }
+      },
+      demo: {
+        files: ['<%= paths.demo %>/**/*.{html,js}'],
         options: {
           livereload: true
         }
@@ -25,7 +32,7 @@ module.exports = function (grunt) {
     sass: {
       server: {
         files: {
-          '<%= paths.src %>/styles/main.css': '<%= paths.src %>/styles/main.scss'
+          '<%= paths.demo %>/styles/main.css': '<%= paths.src %>/styles/main.scss'
         },
         options: {
           sourceComments: 'none'
@@ -35,12 +42,9 @@ module.exports = function (grunt) {
     connect: {
       dev: {
         options: {
-          livereload : 35729,
+          livereload : true,
           port: 8080,
-          hostname: 'localhost',
-          base: [
-            'src'
-          ]
+          hostname: 'localhost'
         }
       }
     },

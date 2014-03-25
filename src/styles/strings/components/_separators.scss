@@ -1,0 +1,10 @@
+
+[data-seperataor] {
+	&:first-child:before {
+		content: "";
+	}
+	&:before {
+	  line-height: 1;
+		content: attr(data-seperataor) "\00A0";
+	}
+}

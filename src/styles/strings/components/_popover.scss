@@ -1,0 +1,43 @@
+.Popover {
+	position: relative;
+}
+
+.Popover__container {
+	position: absolute;
+	top: 100%;
+	z-index: 2010;
+	visibility: hidden;
+}
+
+/**
+ * Regular Popovers sit all the way from the top, flush left.
+ */
+.Popover {
+	&:hover {
+		> .Popover__container-inline {
+			#{htmlDirection()}: 0;
+			visibility: visible;
+		}
+		> .Popover__container-rev {
+			#{htmlDirection-rev()}: 0;
+			#{htmlDirection()}: auto;
+			visibility: visible;
+		}
+
+		/**
+		* Alternative Popovers sit all the way from the left, flush top.
+		*/
+		> .Popover__container-topFloat {
+			top: 0;
+			#{htmlDirection()}: 100%;
+			visibility: visible;
+		}
+		> .Popover__container-topRev {
+			top: 0;
+			#{htmlDirection-rev()}: 100%;
+			#{htmlDirection()}: auto;
+			visibility: visible;
+		}
+	}
+}
+

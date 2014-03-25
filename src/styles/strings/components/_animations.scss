@@ -1,0 +1,15 @@
+
+// Translate Right
+.TraslateXRight-enter, .TraslateXRight-leave{ @include transition(all .45s cubic-bezier(0,.5,0,1)); }
+
+
+.TraslateXRight-enter { @include translateX(100%); }
+.TraslateXRight-enter.TraslateXRight-enter-active { @include translateX(0); }
+
+.TraslateXRight-leave { @include translateX(0); }
+.TraslateXRight-leave.TraslateXRight-leave-active{ @include translateX(100%); }
+
+
+.popInRight { @include animation(translate3d100-0--100-800, .75s, cubic-bezier(.17, .99, .17, 1), both); }
+
+.fadeIn { @include animation(fadeIn, .5s, linear); }
