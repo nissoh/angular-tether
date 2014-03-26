@@ -23,26 +23,38 @@
     <!--<a href="" tether-tooltip="fff" tether-tooltip-config="{ff:'fff'}">hover</a>-->
 
 
-    <div style="padding: 70px; background-color: #ceffee; display: inline-block;"
-            tether-popover="hello world"
-            popover-config="popoverConfig"
-            shared-locals="sharedLocalsWithCtrlPopover">
+    <div>
+      <h2>Popover</h2>
+      <div style="padding: 70px; background-color: #ceffee; display: inline-block;"
+           tether-popover="hello world"
+           popover-config="popoverConfig"
+           shared-locals="sharedLocalsWithCtrlPopover">
 
-      <div>
-        position
         <div>
-          <input ng-model="sharedLocalsWithCtrlPopover.tether.targetAttachment" type="text"/>
+          position
+          <div>
+            <input ng-model="sharedLocalsWithCtrlPopover.tether.targetAttachment" type="text"/>
+          </div>
+          <div>
+            <button ng-click="sharedLocalsWithCtrlPopover.enter({content: 'ddd'})"
+                    ng-disabled="sharedLocalsWithCtrlPopover.isActive()">enter
+            </button>
+            <button ng-click="sharedLocalsWithCtrlPopover.leave()" ng-disabled="!sharedLocalsWithCtrlPopover.isActive()">
+              leave
+            </button>
+          </div>
         </div>
-        <div>
-          <button ng-click="sharedLocalsWithCtrlPopover.enter({content: 'ddd'})" ng-disabled="sharedLocalsWithCtrlPopover.isActive()">enter</button>
-          <button ng-click="sharedLocalsWithCtrlPopover.leave()" ng-disabled="!sharedLocalsWithCtrlPopover.isActive()">leave</button>
-        </div>
+
       </div>
+    </div>
 
-            </div>
 
-    <select ng-model="attachmentX" ng-options="pos for pos in posX"></select>
-    <select ng-model="attachmentY" ng-options="pos for pos in posY"></select>
+    <div>
+      <h2>Tooltip</h2>
+
+      <a href="#" tether-tooltip="10 dollah too buku">Me love you long time</a>
+    </div>
+
 
 
 

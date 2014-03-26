@@ -14,18 +14,17 @@ angular.module('ngTether', [])
         controllerAs  = config.controllerAs,
         parentScope   = config.parentScope || $rootScope,
         extend        = angular.extend,
-        target        = angular.element(config.tether.target || document.body),
+        target        = angular.element(config.target || document.body),
         element       = null,
         scope, html, tether;
 
 
       // Attach a tether element and the target element.
-      function attachTether(configChange) {
+      function attachTether() {
         tether = new Tether(extend({
           element: element[0],
           target: target[0]
-        }, configChange || config));
-        tether.position();
+        }, config));
       }
 
       if (config.template) {
@@ -45,9 +44,7 @@ angular.module('ngTether', [])
         element = angular.element(html);
         scope = parentScope.$new();
         if (locals) {
-          for (var prop in locals) {
-            scope[prop] = locals[prop];
-          }
+          scope.$locals = locals;
         }
 
         var ctrl = $controller(controller, { $scope: scope });
@@ -57,9 +54,10 @@ angular.module('ngTether', [])
         $compile(element)(scope);
 
 
-        $animate.enter(element, angular.element(document.body), target, function() {});
+        $animate.enter(element, angular.element(document.body), target, function() {
+          tether.position();
+        });
         attachTether();
-
       }
 
       // Attach tether and add it to the dom
@@ -68,8 +66,8 @@ angular.module('ngTether', [])
           if (!element) {
             create(html, locals);
           } else {
-            $animate.enter(element, null, target);
             attachTether();
+            $animate.enter(element, null, target);
           }
         });
       }

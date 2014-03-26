@@ -8,18 +8,21 @@ angular.module('ngTether')
       link: function (scope, elem, attrs) {
 
         var tooltip = Tether({
-          controller: ['$scope', function($scope){
-            $scope.content = 'wsup boi!';
-          }],
-          template: '<div class="tooltip">{{ content }}</div>',
-          tether: {
-            target: elem[0]
-          }
+          template: '<div class="tooltip">{{ content }}fff</div>',
+          target: elem[0],
+          attachment: 'top middle',
+          targetAttachment: 'bottom middle',
+          constraints: [
+            {
+              to: 'window',
+              attachment: 'together'
+            }
+          ]
         });
 
 
         elem.on('mouseenter', function(){
-          scope.$apply(tooltip.enter);
+          scope.$apply(tooltip.enter)
         });
         elem.on('mouseleave', function(){
           scope.$apply(tooltip.leave);
