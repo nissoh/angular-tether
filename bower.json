@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "angular": "*",
-    "tether": "~0.4.8",
+    "tether": "~0.6.5",
     "angular-animate": "*"
   },
   "ignore": [

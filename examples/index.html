@@ -18,13 +18,12 @@
 
   <link rel="stylesheet" href="styles/main.css"/>
 </head>
-<body ng-app="app">
-  <div ng-controller="appCtrl" style="padding: 150px; text-align: center;">
-    <!--<a href="" tether-tooltip="fff" tether-tooltip-config="{ff:'fff'}">hover</a>-->
-
+<body ng-app="app" class="Flexbox Flexbox__direction-rows Flexbox__box-align-center Flexbox__just-center">
+  <div ng-controller="appCtrl" >
 
     <div>
       <h2>Popover</h2>
+
       <div style="padding: 70px; background-color: #ceffee; display: inline-block;"
            tether-popover="hello world"
            popover-config="popoverConfig"
@@ -39,7 +38,8 @@
             <button ng-click="sharedLocalsWithCtrlPopover.enter({content: 'ddd'})"
                     ng-disabled="sharedLocalsWithCtrlPopover.isActive()">enter
             </button>
-            <button ng-click="sharedLocalsWithCtrlPopover.leave()" ng-disabled="!sharedLocalsWithCtrlPopover.isActive()">
+            <button ng-click="sharedLocalsWithCtrlPopover.leave()"
+                    ng-disabled="!sharedLocalsWithCtrlPopover.isActive()">
               leave
             </button>
           </div>
@@ -57,8 +57,6 @@
 
 
 
-
-    <!--<button ng-click="tether.active() ? tether.deactivate() : tether.activate() ">tether</button>-->
   </div>
 </body>
 </html>

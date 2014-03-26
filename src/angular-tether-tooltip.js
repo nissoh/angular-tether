@@ -8,16 +8,10 @@ angular.module('ngTether')
       link: function (scope, elem, attrs) {
 
         var tooltip = Tether({
-          template: '<div class="tooltip">{{ content }}fff</div>',
+          template: '<div class="tooltip fade-anim">{{ content }}fff</div>',
           target: elem[0],
-          attachment: 'top middle',
-          targetAttachment: 'bottom middle',
-          constraints: [
-            {
-              to: 'window',
-              attachment: 'together'
-            }
-          ]
+          attachment: 'top center',
+          targetAttachment: 'bottom center'
         });
 
 
