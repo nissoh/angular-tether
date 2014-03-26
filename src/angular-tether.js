@@ -1,5 +1,5 @@
 angular.module('ngTether', [])
-  .factory('Tether', function ($compile, $rootScope, $animate, $controller, $q, $http, $templateCache) {
+  .factory('Tether', function ($compile, $rootScope, $animate, $$animateReflow, $controller, $q, $http, $templateCache) {
     return function (config) {
       'use strict';
 
@@ -17,9 +17,6 @@ angular.module('ngTether', [])
         target        = angular.element(config.tether.target || document.body),
         element       = null,
         scope, html, tether;
-
-
-
 
 
       // Attach a tether element and the target element.
@@ -53,16 +50,16 @@ angular.module('ngTether', [])
           }
         }
 
-        scope.$on('$destroy', function(){
-        });
         var ctrl = $controller(controller, { $scope: scope });
         if (controllerAs) {
           scope[controllerAs] = ctrl;
         }
         $compile(element)(scope);
-        
+
+
+        $animate.enter(element, angular.element(document.body), target, function() {});
         attachTether();
-        $animate.enter(element, null, target);
+
       }
 
       // Attach tether and add it to the dom
@@ -82,10 +79,11 @@ angular.module('ngTether', [])
         if (element) {
           $animate.leave(element, function(){
             element = null;
-            scope.$apply(function(){
+            scope.$$phase || scope.$apply(function(){
               scope.$destroy();
             });
           });
+
         }
       }
 

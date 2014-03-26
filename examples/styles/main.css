@@ -470,3 +470,11 @@
   margin-right: -50px; }
   .Spacebox__inner-horiz-large > * {
     padding-right: 50px; }
+
+.fade-anim.ng-enter, .fade-anim.ng-leave {
+  -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
+  transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s; }
+.fade-anim.ng-enter, .fade-anim.ng-leave.ng-leave-active {
+  opacity: 0; }
+.fade-anim.ng-leave, .fade-anim.ng-enter.ng-enter-active {
+  opacity: 1; }

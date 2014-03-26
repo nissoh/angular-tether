@@ -23,3 +23,24 @@ $htmlDirection: rtl !default;
 @include spaceBox("regular", "20px");
 @include spaceBox("medium", "30px");
 @include spaceBox("large", "50px");
+
+
+
+.fade-anim {
+  &.ng-enter, &.ng-leave {
+    -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+    transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  }
+
+  &.ng-enter, &.ng-leave.ng-leave-active {
+    opacity:0;
+  }
+  &.ng-leave, &.ng-enter.ng-enter-active {
+    opacity:1;
+  }
+}
+
+
+
+
+
