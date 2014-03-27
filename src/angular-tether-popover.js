@@ -1,18 +1,16 @@
 
-angular.module('ngTether')
+angular.module('ngTetherPopover', ['ngTether'])
   .directive('tetherPopover', function (Tether) {
     return {
       scope: {
-        content: '@',
         config: '=?popoverConfig',
-        sharedLocals: '=sharedLocals'
+        tetherPopover: '=tetherPopover'
       },
       template: "<div ng-transclude></div>",
       transclude: true,
       link: function (scope, elem, attrs) {
 
-        scope.sharedLocals = Tether(angular.extend({
-          templateUrl: 'popover.html',
+        scope.tetherPopover = Tether(angular.extend({
           parentScope: scope,
           tether : {
             target: elem[0],
@@ -27,15 +25,15 @@ angular.module('ngTether')
           }
         }, scope.config));
         
-        scope.$watch('sharedLocals.config.targetAttachment', function(){
-          if (scope.sharedLocals.isActive()) {
-            scope.sharedLocals.position()
+        scope.$watch('tetherPopover.config.targetAttachment', function(){
+          if (scope.tetherPopover.isActive()) {
+            scope.tetherPopover.position()
           }
         }, true);
 
-        scope.$watch('sharedLocals.config.attachment', function(){
-          if (scope.sharedLocals.isActive()) {
-            scope.sharedLocals.position()
+        scope.$watch('tetherPopover.config.attachment', function(){
+          if (scope.tetherPopover.isActive()) {
+            scope.tetherPopover.position()
           }
         }, true);
 

@@ -1,11 +1,11 @@
 <div class="Spacebox__small fade-anim" style="background-color: #daf3ff">
   <div> position
-    <div><input ng-model="sharedLocals.config.attachment" type="text"/></div>
+    <div><input ng-model="tetherPopover.config.attachment" type="text"/></div>
     <div>
-      <button ng-click="sharedLocals.enter({content: 'ddd'})"
-              ng-disabled="sharedLocals.isActive()">enter
+      <button ng-click="tetherPopover.enter({content: 'ddd'})"
+              ng-disabled="tetherPopover.isActive()">enter
       </button>
-      <button ng-click="sharedLocals.leave()" ng-disabled="!sharedLocals.isActive()">leave
+      <button ng-click="tetherPopover.leave()" ng-disabled="!tetherPopover.isActive()">leave
       </button>
     </div>
   </div>

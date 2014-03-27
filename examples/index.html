@@ -19,15 +19,31 @@
   <link rel="stylesheet" href="styles/main.css"/>
 </head>
 <body ng-app="app" class="Flexbox Flexbox__direction-rows Flexbox__box-align-center Flexbox__just-center">
+
+<script type="text/ng-template" id="popover.html">
+  <div class="Spacebox__small fade-anim" style="background-color: #daf3ff">
+    <div> position
+      <div><input ng-model="tetherPopover.config.attachment" type="text"/></div>
+      <div>
+        <button ng-click="tetherPopover.enter({content: 'ddd'})"
+                ng-disabled="tetherPopover.isActive()">enter
+        </button>
+        <button ng-click="tetherPopover.leave()" ng-disabled="!tetherPopover.isActive()">leave
+        </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+
   <div ng-controller="appCtrl" >
 
     <div>
       <h2>Popover</h2>
 
       <div style="padding: 70px; background-color: #ceffee; display: inline-block;"
-           tether-popover
-           popover-config="popoverConfig"
-           shared-locals="sharedLocalsWithCtrlPopover">
+           tether-popover="sharedLocalsWithCtrlPopover"
+           popover-config="{template: 'popover.html'}">
 
         <div>
           position

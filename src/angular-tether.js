@@ -1,5 +1,7 @@
+
+
 angular.module('ngTether', [])
-  .factory('Tether', function ($compile, $rootScope, $animate, $$animateReflow, $controller, $q, $http, $templateCache) {
+  .factory('Tether', function ($compile, $rootScope, $animate, $controller, $q, $http, $templateCache) {
     return function (config) {
       'use strict';
 
@@ -9,8 +11,7 @@ angular.module('ngTether', [])
 
       config.tether = config.tether || {};
 
-      var template    = config.template,
-        controller    = config.controller || angular.noop,
+      var controller    = config.controller || angular.noop,
         controllerAs  = config.controllerAs,
         parentScope   = config.parentScope || $rootScope,
         extend        = angular.extend,
@@ -26,12 +27,12 @@ angular.module('ngTether', [])
           target: target
         }, config.tether));
 
-       tether.position();
+        tether.position();
       }
 
       if (config.template) {
         var deferred = $q.defer();
-        deferred.resolve(config.template);
+        deferred.resolve($templateCache.get(config.template) || config.template);
         html = deferred.promise;
       } else {
         html = $http.get(config.templateUrl, {
@@ -83,7 +84,7 @@ angular.module('ngTether', [])
         }
       }
 
-      function position() { 
+      function position() {
         if (element) {
           $animate.move(element, null, angular.element(target));
           attachTether();
@@ -105,3 +106,5 @@ angular.module('ngTether', [])
       };
     };
   });
+
+

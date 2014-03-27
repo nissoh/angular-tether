@@ -1,17 +1,15 @@
-/*! angular-tether - v0.1.0 - 2014-03-27 */angular.module('ngTether').directive('tetherPopover', [
+/*! angular-tether - v0.1.0 - 2014-03-27 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
   'Tether',
   function (Tether) {
     return {
       scope: {
-        content: '@',
         config: '=?popoverConfig',
-        sharedLocals: '=sharedLocals'
+        tetherPopover: '=tetherPopover'
       },
       template: '<div ng-transclude></div>',
       transclude: true,
       link: function (scope, elem, attrs) {
-        scope.sharedLocals = Tether(angular.extend({
-          templateUrl: 'popover.html',
+        scope.tetherPopover = Tether(angular.extend({
           parentScope: scope,
           tether: {
             target: elem[0],
@@ -23,21 +21,21 @@
               }]
           }
         }, scope.config));
-        scope.$watch('sharedLocals.config.targetAttachment', function () {
-          if (scope.sharedLocals.isActive()) {
-            scope.sharedLocals.position();
+        scope.$watch('tetherPopover.config.targetAttachment', function () {
+          if (scope.tetherPopover.isActive()) {
+            scope.tetherPopover.position();
           }
         }, true);
-        scope.$watch('sharedLocals.config.attachment', function () {
-          if (scope.sharedLocals.isActive()) {
-            scope.sharedLocals.position();
+        scope.$watch('tetherPopover.config.attachment', function () {
+          if (scope.tetherPopover.isActive()) {
+            scope.tetherPopover.position();
           }
         }, true);
       }
     };
   }
 ]);
-angular.module('ngTether').directive('tetherTooltip', [
+angular.module('ngTetherTooltip', ['ngTether']).directive('tetherTooltip', [
   'Tether',
   function (Tether) {
     return {
@@ -73,19 +71,18 @@ angular.module('ngTether', []).factory('Tether', [
   '$compile',
   '$rootScope',
   '$animate',
-  '$$animateReflow',
   '$controller',
   '$q',
   '$http',
   '$templateCache',
-  function ($compile, $rootScope, $animate, $$animateReflow, $controller, $q, $http, $templateCache) {
+  function ($compile, $rootScope, $animate, $controller, $q, $http, $templateCache) {
     return function (config) {
       'use strict';
       if (+!!config.template + +!!config.templateUrl !== 1) {
         throw new Error('Expected one of either `template` or `templateUrl`');
       }
       config.tether = config.tether || {};
-      var template = config.template, controller = config.controller || angular.noop, controllerAs = config.controllerAs, parentScope = config.parentScope || $rootScope, extend = angular.extend, target = config.tether.target || document.body, element = null, scope, html, tether;
+      var controller = config.controller || angular.noop, controllerAs = config.controllerAs, parentScope = config.parentScope || $rootScope, extend = angular.extend, target = config.tether.target || document.body, element = null, scope, html, tether;
       // Attach a tether element and the target element.
       function attachTether() {
         tether = new Tether(extend({
@@ -96,7 +93,7 @@ angular.module('ngTether', []).factory('Tether', [
       }
       if (config.template) {
         var deferred = $q.defer();
-        deferred.resolve(config.template);
+        deferred.resolve($templateCache.get(config.template) || config.template);
         html = deferred.promise;
       } else {
         html = $http.get(config.templateUrl, { cache: $templateCache }).then(function (response) {
@@ -158,4 +155,4 @@ angular.module('ngTether', []).factory('Tether', [
       };
     };
   }
-]);
+]);}));

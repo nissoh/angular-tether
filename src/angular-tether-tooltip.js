@@ -1,4 +1,4 @@
-angular.module('ngTether')
+angular.module('ngTetherTooltip', ['ngTether'])
   .directive('tetherTooltip', function (Tether) {
     return {
       scope: {

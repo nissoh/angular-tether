@@ -19,13 +19,14 @@ module.exports = function (grunt) {
       src: {
         files: ['<%= paths.src %>/**/*.js'],
         options: {
-          livereload: true
-        }
+          livereload: 9913
+        },
+        tasks: 'build'
       },
       demo: {
         files: ['<%= paths.demo %>/**/*.{html,js}'],
         options: {
-          livereload: true
+          livereload: 9913
         }
       }
     },
@@ -42,7 +43,7 @@ module.exports = function (grunt) {
     connect: {
       dev: {
         options: {
-          livereload : true,
+          livereload : 9913,
           port: 3000,
           hostname: 'localhost'
         }
@@ -70,11 +71,21 @@ module.exports = function (grunt) {
     },
     concat: {
       options: {
-        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-          '<%= grunt.template.today("yyyy-mm-dd") %> */'
+        banner:
+          '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+          '<%= grunt.template.today("yyyy-mm-dd") %> */' +
+            '(function (root, factory) {' +
+              'if (typeof define === "function" && define.amd) {' +
+              'define(["tether"], factory);' +
+              '} else if (typeof exports === "object") {' +
+              'module.exports = factory(require("tether"));' +
+              '} else {' +
+              'root.test = factory(root.jQuery, root.jade, root._)};' +
+              '}(this, function(Tether) {',
+        footer: '}));'
       },
       dist: {
-        src: '<%= paths.tmp %>/**/*.js',
+        src: ['<%= paths.tmp %>/**/*.js'],
         dest: '<%= paths.dist %>/angular-tether.js'
       }
     },

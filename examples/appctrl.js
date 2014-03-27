@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ng', 'ngAnimate', 'ngTether']);
+var app = angular.module('app', ['ng', 'ngAnimate', 'ngTetherTooltip', 'ngTetherPopover']);
 
 
 app.controller('appCtrl', ['$scope','Tether',function($scope, Tether){
