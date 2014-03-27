@@ -25,14 +25,14 @@
       <h2>Popover</h2>
 
       <div style="padding: 70px; background-color: #ceffee; display: inline-block;"
-           tether-popover="hello world"
+           tether-popover
            popover-config="popoverConfig"
            shared-locals="sharedLocalsWithCtrlPopover">
 
         <div>
           position
           <div>
-            <input ng-model="sharedLocalsWithCtrlPopover.tether.targetAttachment" type="text"/>
+            <input ng-model="sharedLocalsWithCtrlPopover.config.targetAttachment" type="text"/>
           </div>
           <div>
             <button ng-click="sharedLocalsWithCtrlPopover.enter({content: 'ddd'})"

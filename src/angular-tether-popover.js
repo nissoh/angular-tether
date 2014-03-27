@@ -12,28 +12,30 @@ angular.module('ngTether')
       link: function (scope, elem, attrs) {
 
         scope.sharedLocals = Tether(angular.extend({
-          parentScope: scope,
           templateUrl: 'popover.html',
-          target: elem[0],
-          attachment: 'middle right',
-          targetAttachment: 'middle left',
-          constraints: [
-            {
-              to: 'window',
-              attachment: 'together'
-            }
-          ]
+          parentScope: scope,
+          tether : {
+            target: elem[0],
+            attachment: 'middle right',
+            targetAttachment: 'middle left',
+            constraints: [
+              {
+                to: 'window',
+                attachment: 'together'
+              }
+            ]
+          }
         }, scope.config));
         
-        scope.$watch('sharedLocals.tether.targetAttachment', function(){
+        scope.$watch('sharedLocals.config.targetAttachment', function(){
           if (scope.sharedLocals.isActive()) {
-            scope.sharedLocals.enter()
+            scope.sharedLocals.position()
           }
         }, true);
 
-        scope.$watch('sharedLocals.tether.attachment', function(){
+        scope.$watch('sharedLocals.config.attachment', function(){
           if (scope.sharedLocals.isActive()) {
-            scope.sharedLocals.enter()
+            scope.sharedLocals.position()
           }
         }, true);
 

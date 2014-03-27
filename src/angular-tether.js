@@ -14,7 +14,7 @@ angular.module('ngTether', [])
         controllerAs  = config.controllerAs,
         parentScope   = config.parentScope || $rootScope,
         extend        = angular.extend,
-        target        = angular.element(config.target || document.body),
+        target        = config.tether.target || document.body,
         element       = null,
         scope, html, tether;
 
@@ -23,8 +23,10 @@ angular.module('ngTether', [])
       function attachTether() {
         tether = new Tether(extend({
           element: element[0],
-          target: target[0]
-        }, config)).position();
+          target: target
+        }, config.tether));
+
+       tether.position();
       }
 
       if (config.template) {
@@ -34,10 +36,9 @@ angular.module('ngTether', [])
       } else {
         html = $http.get(config.templateUrl, {
           cache: $templateCache
-        }).
-          then(function (response) {
-            return response.data;
-          });
+        }).then(function (response) {
+          return response.data;
+        });
       }
 
       function create(html, locals) {
@@ -54,9 +55,8 @@ angular.module('ngTether', [])
         }
         $compile(element)(scope);
 
+        $animate.enter(element, null, angular.element(target));
         attachTether();
-        $animate.enter(element, null, target);
-
       }
 
       // Attach tether and add it to the dom
@@ -65,8 +65,8 @@ angular.module('ngTether', [])
           if (!element) {
             create(html, locals);
           } else {
+            $animate.enter(element, null, angular.element(target));
             attachTether();
-            $animate.enter(element, null, target);
           }
         });
       }
@@ -80,7 +80,13 @@ angular.module('ngTether', [])
               scope.$destroy();
             });
           });
+        }
+      }
 
+      function position() { 
+        if (element) {
+          $animate.move(element, null, angular.element(target));
+          attachTether();
         }
       }
 
@@ -93,8 +99,9 @@ angular.module('ngTether', [])
       return {
         enter: enter,
         leave: leave,
+        position: position,
         isActive: isActive,
-        tether : config
+        config : config.tether
       };
     };
   });
