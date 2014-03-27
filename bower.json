@@ -4,7 +4,7 @@
   "main": "./dist/angular-tether.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/remind101/angular-tether.git"
+    "url": "git://github.com/nissoh/angular-tether.git"
   },
   "dependencies": {
     "angular": "*",
