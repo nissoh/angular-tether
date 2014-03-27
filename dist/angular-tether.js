@@ -1,4 +1,43 @@
-/*! angular-tether - v0.0.1 - 2014-03-23 */angular.module('ngTether').directive('tetherTooltip', [
+/*! angular-tether - v0.1.0 - 2014-03-27 */angular.module('ngTether').directive('tetherPopover', [
+  'Tether',
+  function (Tether) {
+    return {
+      scope: {
+        content: '@',
+        config: '=?popoverConfig',
+        sharedLocals: '=sharedLocals'
+      },
+      template: '<div ng-transclude></div>',
+      transclude: true,
+      link: function (scope, elem, attrs) {
+        scope.sharedLocals = Tether(angular.extend({
+          templateUrl: 'popover.html',
+          parentScope: scope,
+          tether: {
+            target: elem[0],
+            attachment: 'middle right',
+            targetAttachment: 'middle left',
+            constraints: [{
+                to: 'window',
+                attachment: 'together'
+              }]
+          }
+        }, scope.config));
+        scope.$watch('sharedLocals.config.targetAttachment', function () {
+          if (scope.sharedLocals.isActive()) {
+            scope.sharedLocals.position();
+          }
+        }, true);
+        scope.$watch('sharedLocals.config.attachment', function () {
+          if (scope.sharedLocals.isActive()) {
+            scope.sharedLocals.position();
+          }
+        }, true);
+      }
+    };
+  }
+]);
+angular.module('ngTether').directive('tetherTooltip', [
   'Tether',
   function (Tether) {
     return {
@@ -8,14 +47,13 @@
       },
       link: function (scope, elem, attrs) {
         var tooltip = Tether({
-            controller: [
-              '$scope',
-              function ($scope) {
-                $scope.content = 'wsup boi!';
-              }
-            ],
-            template: '<div class="tooltip">{{ content }}</div>',
-            tether: { target: elem[0] }
+            template: '<div class="tooltip fade-anim">{{ content }}</div>',
+            parentScope: scope,
+            tether: {
+              target: elem[0],
+              attachment: 'top center',
+              targetAttachment: 'bottom center'
+            }
           });
         elem.on('mouseenter', function () {
           scope.$apply(tooltip.enter);
@@ -35,33 +73,26 @@ angular.module('ngTether', []).factory('Tether', [
   '$compile',
   '$rootScope',
   '$animate',
+  '$$animateReflow',
   '$controller',
   '$q',
   '$http',
   '$templateCache',
-  function ($compile, $rootScope, $animate, $controller, $q, $http, $templateCache) {
-    return function modalFactory(config) {
+  function ($compile, $rootScope, $animate, $$animateReflow, $controller, $q, $http, $templateCache) {
+    return function (config) {
       'use strict';
       if (+!!config.template + +!!config.templateUrl !== 1) {
         throw new Error('Expected one of either `template` or `templateUrl`');
       }
       config.tether = config.tether || {};
-      var template = config.template, controller = config.controller || angular.noop, controllerAs = config.controllerAs, extend = angular.extend, target = angular.element(config.tether.target || document.body), element = null, html, tether;
-      var defaultConfig = {
-          attachment: 'top middle',
-          targetAttachment: 'bottom middle',
-          constraints: [{
-              to: 'window',
-              attachment: 'together'
-            }]
-        };
-      extend(defaultConfig, config.tether);
+      var template = config.template, controller = config.controller || angular.noop, controllerAs = config.controllerAs, parentScope = config.parentScope || $rootScope, extend = angular.extend, target = config.tether.target || document.body, element = null, scope, html, tether;
       // Attach a tether element and the target element.
       function attachTether() {
         tether = new Tether(extend({
           element: element[0],
-          target: target[0]
-        }, defaultConfig));
+          target: target
+        }, config.tether));
+        tether.position();
       }
       if (config.template) {
         var deferred = $q.defer();
@@ -74,18 +105,16 @@ angular.module('ngTether', []).factory('Tether', [
       }
       function create(html, locals) {
         element = angular.element(html);
-        var scope = $rootScope.$new();
+        scope = parentScope.$new();
         if (locals) {
-          for (var prop in locals) {
-            scope[prop] = locals[prop];
-          }
+          scope.$locals = locals;
         }
         var ctrl = $controller(controller, { $scope: scope });
         if (controllerAs) {
           scope[controllerAs] = ctrl;
         }
         $compile(element)(scope);
-        $animate.enter(element, null, target);
+        $animate.enter(element, null, angular.element(target));
         attachTether();
       }
       // Attach tether and add it to the dom
@@ -94,7 +123,7 @@ angular.module('ngTether', []).factory('Tether', [
           if (!element) {
             create(html, locals);
           } else {
-            $animate.enter(element, null, target);
+            $animate.enter(element, null, angular.element(target));
             attachTether();
           }
         });
@@ -102,7 +131,18 @@ angular.module('ngTether', []).factory('Tether', [
       // Detach the tether and remove it from the dom
       function leave() {
         if (element) {
-          $animate.leave(element);
+          $animate.leave(element, function () {
+            element = null;
+            scope.$$phase && scope.$destroy() || scope.$apply(function () {
+              scope.$destroy();
+            });
+          });
+        }
+      }
+      function position() {
+        if (element) {
+          $animate.move(element, null, angular.element(target));
+          attachTether();
         }
       }
       // bool. did get element get assigned ? true : false
@@ -112,7 +152,9 @@ angular.module('ngTether', []).factory('Tether', [
       return {
         enter: enter,
         leave: leave,
-        isActive: isActive
+        position: position,
+        isActive: isActive,
+        config: config.tether
       };
     };
   }
