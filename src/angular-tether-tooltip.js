@@ -19,10 +19,10 @@ angular.module('ngTetherTooltip', ['ngTether'])
 
 
         elem.on('mouseenter', function(){
-          scope.$apply(tooltip.enter)
+          tooltip.enter();
         });
         elem.on('mouseleave', function(){
-          scope.$apply(tooltip.leave);
+          tooltip.leave();
         });
 
         scope.$on('$destroy', function(){

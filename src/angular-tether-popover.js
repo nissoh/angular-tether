@@ -1,6 +1,6 @@
 
 angular.module('ngTetherPopover', ['ngTether'])
-  .directive('tetherPopover', function (Tether) {
+  .directive('tetherPopover', function (Tether, Utils) {
     return {
       scope: {
         config: '=?popoverConfig',
@@ -10,12 +10,12 @@ angular.module('ngTetherPopover', ['ngTether'])
       transclude: true,
       link: function (scope, elem, attrs) {
 
-        scope.tetherPopover = Tether(angular.extend({
+        scope.tetherPopover = Tether(Utils.extendDeep({
           parentScope: scope,
           tether : {
             target: elem[0],
-            attachment: 'middle right',
-            targetAttachment: 'middle left',
+            attachment: 'top center',
+            targetAttachment: 'bottom center',
             constraints: [
               {
                 to: 'window',

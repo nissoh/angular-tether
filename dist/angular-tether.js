@@ -1,6 +1,7 @@
-/*! angular-tether - v0.1.0 - 2014-03-27 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
+/*! angular-tether - v0.1.0 - 2014-03-28 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
   'Tether',
-  function (Tether) {
+  'Utils',
+  function (Tether, Utils) {
     return {
       scope: {
         config: '=?popoverConfig',
@@ -9,12 +10,12 @@
       template: '<div ng-transclude></div>',
       transclude: true,
       link: function (scope, elem, attrs) {
-        scope.tetherPopover = Tether(angular.extend({
+        scope.tetherPopover = Tether(Utils.extendDeep({
           parentScope: scope,
           tether: {
             target: elem[0],
-            attachment: 'middle right',
-            targetAttachment: 'middle left',
+            attachment: 'top center',
+            targetAttachment: 'bottom center',
             constraints: [{
                 to: 'window',
                 attachment: 'together'
@@ -54,10 +55,10 @@ angular.module('ngTetherTooltip', ['ngTether']).directive('tetherTooltip', [
             }
           });
         elem.on('mouseenter', function () {
-          scope.$apply(tooltip.enter);
+          tooltip.enter();
         });
         elem.on('mouseleave', function () {
-          scope.$apply(tooltip.leave);
+          tooltip.leave();
         });
         scope.$on('$destroy', function () {
           _elm.unbind('hover');
@@ -67,29 +68,44 @@ angular.module('ngTetherTooltip', ['ngTether']).directive('tetherTooltip', [
     };
   }
 ]);
-angular.module('ngTether', []).factory('Tether', [
+angular.module('ngTether', []).factory('Utils', [
+  '$compile',
+  function ($compile) {
+    var Utils = {};
+    Utils.extendDeep = function (destination, source) {
+      for (var property in source) {
+        if (source[property] && source[property].constructor && source[property].constructor === Object) {
+          destination[property] = destination[property] || {};
+          arguments.callee(destination[property], source[property]);
+        } else {
+          destination[property] = source[property];
+        }
+      }
+      return destination;
+    };
+    return Utils;
+  }
+]).factory('Tether', [
   '$compile',
   '$rootScope',
   '$animate',
   '$controller',
+  '$timeout',
   '$q',
   '$http',
   '$templateCache',
-  function ($compile, $rootScope, $animate, $controller, $q, $http, $templateCache) {
+  function ($compile, $rootScope, $animate, $controller, $timeout, $q, $http, $templateCache) {
     return function (config) {
       'use strict';
       if (+!!config.template + +!!config.templateUrl !== 1) {
         throw new Error('Expected one of either `template` or `templateUrl`');
       }
       config.tether = config.tether || {};
-      var controller = config.controller || angular.noop, controllerAs = config.controllerAs, parentScope = config.parentScope || $rootScope, extend = angular.extend, target = config.tether.target || document.body, element = null, scope, html, tether;
+      var controller = config.controller || angular.noop, controllerAs = config.controllerAs, parentScope = config.parentScope || $rootScope, extend = angular.extend, element = null, scope, html, tether;
+      var target = config.tether.target = config.tether.target || document.body;
       // Attach a tether element and the target element.
       function attachTether() {
-        tether = new Tether(extend({
-          element: element[0],
-          target: target
-        }, config.tether));
-        tether.position();
+        tether = new Tether(extend({ element: element[0] }, config.tether));  //         tether.position();
       }
       if (config.template) {
         var deferred = $q.defer();
@@ -111,28 +127,27 @@ angular.module('ngTether', []).factory('Tether', [
           scope[controllerAs] = ctrl;
         }
         $compile(element)(scope);
-        $animate.enter(element, null, angular.element(target));
-        attachTether();
+        scope.$on('$destroy', destroy);
+        // timeout is used because digest is being called in the html's promise wrapper
+        // when the asynced digest cycle is done the $timeout will be called gracefully
+        $timeout(function () {
+          attachTether();
+          $animate.enter(element, null, angular.element(target));
+        });
+        angular.element(document.body).append(element);
       }
       // Attach tether and add it to the dom
       function enter(locals) {
         html.then(function (html) {
-          if (!element) {
-            create(html, locals);
-          } else {
-            $animate.enter(element, null, angular.element(target));
-            attachTether();
-          }
+          create(html, locals);
         });
       }
       // Detach the tether and remove it from the dom
       function leave() {
         if (element) {
-          $animate.leave(element, function () {
-            element = null;
-            scope.$$phase && scope.$destroy() || scope.$apply(function () {
-              scope.$destroy();
-            });
+          $timeout(function () {
+            tether.destroy();
+            $animate.leave(element);
           });
         }
       }
@@ -142,9 +157,12 @@ angular.module('ngTether', []).factory('Tether', [
           attachTether();
         }
       }
-      // bool. did get element get assigned ? true : false
+      function destroy() {
+        element = null;
+      }
+      // bool. is tethered instance got destroyed
       function isActive() {
-        return !!element;
+        return tether && tether.enabled;
       }
       return {
         enter: enter,

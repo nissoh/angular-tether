@@ -1,7 +1,25 @@
 
 
 angular.module('ngTether', [])
-  .factory('Tether', function ($compile, $rootScope, $animate, $controller, $q, $http, $templateCache) {
+  .factory('Utils', function($compile) {
+    var Utils = {};
+
+    Utils.extendDeep = function(destination, source) {
+      for (var property in source) {
+        if (source[property] && source[property].constructor &&
+          source[property].constructor === Object) {
+          destination[property] = destination[property] || {};
+          arguments.callee(destination[property], source[property]);
+        } else {
+          destination[property] = source[property];
+        }
+      }
+      return destination;
+    };
+
+    return Utils;
+  })
+  .factory('Tether', function ($compile, $rootScope, $animate, $controller, $timeout, $q, $http, $templateCache) {
     return function (config) {
       'use strict';
 
@@ -11,23 +29,23 @@ angular.module('ngTether', [])
 
       config.tether = config.tether || {};
 
-      var controller    = config.controller || angular.noop,
+      var
+        controller    = config.controller || angular.noop,
         controllerAs  = config.controllerAs,
         parentScope   = config.parentScope || $rootScope,
         extend        = angular.extend,
-        target        = config.tether.target || document.body,
         element       = null,
         scope, html, tether;
+
+      var target = config.tether.target = config.tether.target || document.body;
 
 
       // Attach a tether element and the target element.
       function attachTether() {
         tether = new Tether(extend({
-          element: element[0],
-          target: target
+          element: element[0]
         }, config.tether));
-
-        tether.position();
+//         tether.position();
       }
 
       if (config.template) {
@@ -55,32 +73,33 @@ angular.module('ngTether', [])
           scope[controllerAs] = ctrl;
         }
         $compile(element)(scope);
-
-        $animate.enter(element, null, angular.element(target));
-        attachTether();
+        scope.$on('$destroy', destroy);
+        
+        // timeout is used because digest is being called in the html's promise wrapper
+        // when the asynced digest cycle is done the $timeout will be called gracefully
+        $timeout(function() {
+          attachTether();
+          $animate.enter(element, null, angular.element(target));
+        });
+        
+        angular.element(document.body).append(element);
       }
 
       // Attach tether and add it to the dom
       function enter(locals) {
         html.then(function (html) {
-          if (!element) {
-            create(html, locals);
-          } else {
-            $animate.enter(element, null, angular.element(target));
-            attachTether();
-          }
+          create(html, locals);
         });
       }
 
       // Detach the tether and remove it from the dom
       function leave() {
         if (element) {
-          $animate.leave(element, function(){
-            element = null;
-            scope.$$phase && scope.$destroy() || scope.$apply(function(){
-              scope.$destroy();
-            });
+          $timeout(function(){
+            tether.destroy();
+            $animate.leave(element);
           });
+          
         }
       }
 
@@ -90,11 +109,15 @@ angular.module('ngTether', [])
           attachTether();
         }
       }
+      
+      function destroy() {
+        element = null;
+      }
 
 
-      // bool. did get element get assigned ? true : false
+      // bool. is tethered instance got destroyed
       function isActive() {
-        return !!element;
+        return tether && tether.enabled;
       }
 
       return {
