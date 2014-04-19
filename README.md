@@ -7,7 +7,7 @@ Extending angular tether roadmap in current development.
 ```
 [x] Tooltip.
 [ ] Modal.
-[ ] Popover.
+[x] Popover.
 [ ] Menu.
 ```
 

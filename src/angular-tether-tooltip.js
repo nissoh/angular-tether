@@ -7,16 +7,20 @@ angular.module('ngTetherTooltip', ['ngTether'])
       },
       link: function (scope, elem, attrs) {
 
-        var tooltip = Tether({
+        var tooltip = Tether(Utils.extendDeep({
           template: '<div class="tooltip fade-anim">{{ content }}</div>',
           parentScope: scope,
-          tether : {
+          tether: {
             target: elem[0],
             attachment: 'top center',
-            targetAttachment: 'bottom center'
+            targetAttachment: 'bottom center',
+            constraints: [{
+              to: 'window',
+              attachment: 'together',
+              pin: true
+            }]
           }
-        });
-
+        }, scope.config));
 
         elem.on('mouseenter', function(){
           tooltip.enter();
@@ -26,8 +30,8 @@ angular.module('ngTetherTooltip', ['ngTether'])
         });
 
         scope.$on('$destroy', function(){
-          _elm.unbind('hover');
-          _elm.unbind('mouseleave');
+          elem.unbind('hover');
+          elem.unbind('mouseleave');
         });
 
 

@@ -1,4 +1,4 @@
-/*! angular-tether - v0.1.0 - 2014-03-28 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
+/*! angular-tether - v0.1.0 - 2014-03-30 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
   'Tether',
   'Utils',
   function (Tether, Utils) {
@@ -51,7 +51,12 @@ angular.module('ngTetherTooltip', ['ngTether']).directive('tetherTooltip', [
             tether: {
               target: elem[0],
               attachment: 'top center',
-              targetAttachment: 'bottom center'
+              targetAttachment: 'bottom center',
+              constraints: [{
+                  to: 'window',
+                  attachment: 'together',
+                  pin: true
+                }]
             }
           });
         elem.on('mouseenter', function () {
@@ -61,8 +66,8 @@ angular.module('ngTetherTooltip', ['ngTether']).directive('tetherTooltip', [
           tooltip.leave();
         });
         scope.$on('$destroy', function () {
-          _elm.unbind('hover');
-          _elm.unbind('mouseleave');
+          elem.unbind('hover');
+          elem.unbind('mouseleave');
         });
       }
     };
@@ -105,7 +110,7 @@ angular.module('ngTether', []).factory('Utils', [
       var target = config.tether.target = config.tether.target || document.body;
       // Attach a tether element and the target element.
       function attachTether() {
-        tether = new Tether(extend({ element: element[0] }, config.tether));  //         tether.position();
+        tether = new Tether(extend({ element: element[0] }, config.tether));
       }
       if (config.template) {
         var deferred = $q.defer();
@@ -132,7 +137,7 @@ angular.module('ngTether', []).factory('Utils', [
         // when the asynced digest cycle is done the $timeout will be called gracefully
         $timeout(function () {
           attachTether();
-          $animate.enter(element, null, angular.element(target));
+          $animate.enter(element, angular.element(document.body));
         });
         angular.element(document.body).append(element);
       }
@@ -153,7 +158,7 @@ angular.module('ngTether', []).factory('Utils', [
       }
       function position() {
         if (element) {
-          $animate.move(element, null, angular.element(target));
+          $animate.move(element, angular.element(document.body));
           attachTether();
         }
       }

@@ -45,7 +45,6 @@ angular.module('ngTether', [])
         tether = new Tether(extend({
           element: element[0]
         }, config.tether));
-//         tether.position();
       }
 
       if (config.template) {
@@ -79,7 +78,7 @@ angular.module('ngTether', [])
         // when the asynced digest cycle is done the $timeout will be called gracefully
         $timeout(function() {
           attachTether();
-          $animate.enter(element, null, angular.element(target));
+          $animate.enter(element, angular.element(document.body));
         });
         
         angular.element(document.body).append(element);
@@ -105,7 +104,7 @@ angular.module('ngTether', [])
 
       function position() {
         if (element) {
-          $animate.move(element, null, angular.element(target));
+          $animate.move(element, angular.element(document.body));
           attachTether();
         }
       }
