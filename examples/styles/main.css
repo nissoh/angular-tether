@@ -479,30 +479,6 @@
 .fade-anim.ng-leave, .fade-anim.ng-enter.ng-enter-active {
   opacity: 1; }
 
-.fade-anim.ng-enter, .fade-anim.ng-leave {
-  -webkit-transition: all 0.15s ease;
-  -moz-transition: all 0.15s ease;
-  -o-transition: all 0.15s ease;
-  transition: all 0.15s ease;
-  -webkit-transform-origin: 50% 0;
-  -moz-transform-origin: 50% 0;
-  -o-transform-origin: 50% 0;
-  transform-origin: 50% 0; }
-.fade-anim.ng-enter, .fade-anim.ng-leave.ng-leave-active {
-  -webkit-transform: perspective(300) rotateX(-25deg);
-  -moz-transform: perspective(300) rotateX(-25deg);
-  -o-transform: perspective(300) rotateX(-25deg);
-  transform: perspective(300) rotateX(-25deg);
-  opacity: 0;
-  visibility: hidden; }
-.fade-anim.ng-leave, .fade-anim.ng-enter.ng-enter-active {
-  -webkit-transform: perspective(300) rotateX(0deg);
-  -moz-transform: perspective(300) rotateX(0deg);
-  -o-transform: perspective(300) rotateX(0deg);
-  transform: perspective(300) rotateX(0deg);
-  opacity: 1;
-  visibility: visible; }
-
 .flipInFade {
   -webkit-transition: all 0.15s ease;
   -moz-transition: all 0.15s ease;

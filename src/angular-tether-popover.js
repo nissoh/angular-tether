@@ -11,7 +11,7 @@ angular.module('ngTetherPopover', ['ngTether'])
       link: function (scope, elem, attrs) {
 
         scope.tetherPopover = Tether(Utils.extendDeep({
-          parentScope: scope,
+          parentScope: scope.$parent,
           tether : {
             target: elem[0],
             attachment: 'top center',

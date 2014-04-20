@@ -23,7 +23,7 @@ angular.module('ngTether', [])
     return function (config) {
       'use strict';
 
-      if ((+!!config.template) + (+!!config.templateUrl) !== 1) {
+      if (!(!config.template ^ !config.templateUrl)) {
         throw new Error('Expected one of either `template` or `templateUrl`');
       }
 
@@ -61,27 +61,24 @@ angular.module('ngTether', [])
 
       function create(html, locals) {
         element = angular.element(html);
+        $animate.enter(element, angular.element(document.body));
 
         scope = parentScope.$new();
         if (locals) {
           scope.$locals = locals;
         }
 
-        var ctrl = $controller(controller, { $scope: scope });
+        if (config.controller) {
+          var ctrl = $controller(controller, { $scope: scope });
+        }
         if (controllerAs) {
           scope[controllerAs] = ctrl;
         }
         $compile(element)(scope);
         scope.$on('$destroy', destroy);
-        
-        // timeout is used because digest is being called in the html's promise wrapper
-        // when the asynced digest cycle is done the $timeout will be called gracefully
-        $timeout(function() {
-          attachTether();
-          $animate.enter(element, angular.element(document.body));
-        });
-        
-        angular.element(document.body).append(element);
+
+        attachTether();
+        tether.position()
       }
 
       // Attach tether and add it to the dom
@@ -98,7 +95,6 @@ angular.module('ngTether', [])
             tether.destroy();
             $animate.leave(element);
           });
-          
         }
       }
 
@@ -108,7 +104,7 @@ angular.module('ngTether', [])
           attachTether();
         }
       }
-      
+
       function destroy() {
         element = null;
       }

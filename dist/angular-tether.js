@@ -1,4 +1,4 @@
-/*! angular-tether - v0.1.0 - 2014-03-30 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
+/*! angular-tether - v0.1.0 - 2014-04-20 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
   'Tether',
   'Utils',
   function (Tether, Utils) {
@@ -11,7 +11,7 @@
       transclude: true,
       link: function (scope, elem, attrs) {
         scope.tetherPopover = Tether(Utils.extendDeep({
-          parentScope: scope,
+          parentScope: scope.$parent,
           tether: {
             target: elem[0],
             attachment: 'top center',
@@ -38,16 +38,17 @@
 ]);
 angular.module('ngTetherTooltip', ['ngTether']).directive('tetherTooltip', [
   'Tether',
-  function (Tether) {
+  'Utils',
+  function (Tether, Utils) {
     return {
       scope: {
         content: '@tetherTooltip',
         config: '=?tetherTooltipConfig'
       },
       link: function (scope, elem, attrs) {
-        var tooltip = Tether({
+        var tooltip = Tether(Utils.extendDeep({
             template: '<div class="tooltip fade-anim">{{ content }}</div>',
-            parentScope: scope,
+            parentScope: scope.$parent,
             tether: {
               target: elem[0],
               attachment: 'top center',
@@ -58,7 +59,7 @@ angular.module('ngTetherTooltip', ['ngTether']).directive('tetherTooltip', [
                   pin: true
                 }]
             }
-          });
+          }, scope.config));
         elem.on('mouseenter', function () {
           tooltip.enter();
         });
@@ -102,7 +103,7 @@ angular.module('ngTether', []).factory('Utils', [
   function ($compile, $rootScope, $animate, $controller, $timeout, $q, $http, $templateCache) {
     return function (config) {
       'use strict';
-      if (+!!config.template + +!!config.templateUrl !== 1) {
+      if (!(!config.template ^ !config.templateUrl)) {
         throw new Error('Expected one of either `template` or `templateUrl`');
       }
       config.tether = config.tether || {};
@@ -123,23 +124,21 @@ angular.module('ngTether', []).factory('Utils', [
       }
       function create(html, locals) {
         element = angular.element(html);
+        $animate.enter(element, angular.element(document.body));
         scope = parentScope.$new();
         if (locals) {
           scope.$locals = locals;
         }
-        var ctrl = $controller(controller, { $scope: scope });
+        if (config.controller) {
+          var ctrl = $controller(controller, { $scope: scope });
+        }
         if (controllerAs) {
           scope[controllerAs] = ctrl;
         }
         $compile(element)(scope);
         scope.$on('$destroy', destroy);
-        // timeout is used because digest is being called in the html's promise wrapper
-        // when the asynced digest cycle is done the $timeout will be called gracefully
-        $timeout(function () {
-          attachTether();
-          $animate.enter(element, angular.element(document.body));
-        });
-        angular.element(document.body).append(element);
+        attachTether();
+        tether.position();
       }
       // Attach tether and add it to the dom
       function enter(locals) {

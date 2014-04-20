@@ -1,5 +1,5 @@
 angular.module('ngTetherTooltip', ['ngTether'])
-  .directive('tetherTooltip', function (Tether) {
+  .directive('tetherTooltip', function (Tether, Utils) {
     return {
       scope: {
         content: '@tetherTooltip',
@@ -9,7 +9,7 @@ angular.module('ngTetherTooltip', ['ngTether'])
 
         var tooltip = Tether(Utils.extendDeep({
           template: '<div class="tooltip fade-anim">{{ content }}</div>',
-          parentScope: scope,
+          parentScope: scope.$parent,
           tether: {
             target: elem[0],
             attachment: 'top center',

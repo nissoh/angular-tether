@@ -40,23 +40,7 @@ $htmlDirection: ltr !default;
   }
 }
 
-.fade-anim {
-  &.ng-enter, &.ng-leave {
-    @include transition(all .15s ease);
-    @include transform-origin(50%, 0);
-  }
 
-  &.ng-enter, &.ng-leave.ng-leave-active {
-    @include transform(perspective(300) rotateX(-25deg));
-    opacity: 0;
-    visibility: hidden;
-  }
-  &.ng-leave, &.ng-enter.ng-enter-active {
-    @include transform(perspective(300) rotateX(0deg));
-    opacity: 1;
-    visibility: visible;
-  }
-}
 
 .flipInFade {
   @include transition(all .15s ease);
