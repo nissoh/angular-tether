@@ -9,7 +9,7 @@ angular.module('ngTetherTooltip', ['ngTether'])
 
         var tooltip = Tether(Utils.extendDeep({
           template: '<div class="tooltip fade-anim">{{ content }}</div>',
-          parentScope: scope.$parent,
+          parentScope: scope,
           tether: {
             target: elem[0],
             attachment: 'top center',

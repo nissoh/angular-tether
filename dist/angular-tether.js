@@ -1,17 +1,15 @@
 /*! angular-tether - v0.1.0 - 2014-04-20 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
   'Tether',
+  '$parse',
   'Utils',
-  function (Tether, Utils) {
+  function (Tether, $parse, Utils) {
     return {
-      scope: {
-        config: '=?popoverConfig',
-        tetherPopover: '=tetherPopover'
-      },
       template: '<div ng-transclude></div>',
       transclude: true,
       link: function (scope, elem, attrs) {
-        scope.tetherPopover = Tether(Utils.extendDeep({
-          parentScope: scope.$parent,
+        var config = $parse(attrs.popoverConfig)(scope);
+        scope[attrs.tetherPopover] = Tether(Utils.extendDeep({
+          parentScope: scope,
           tether: {
             target: elem[0],
             attachment: 'top center',
@@ -21,17 +19,19 @@
                 attachment: 'together'
               }]
           }
-        }, scope.config));
-        scope.$watch('tetherPopover.config.targetAttachment', function () {
-          if (scope.tetherPopover.isActive()) {
-            scope.tetherPopover.position();
+        }, config));
+        scope.$watch(attrs.tetherPopover + '.config.targetAttachment', function () {
+          if (scope[attrs.tetherPopover].isActive()) {
+            scope[attrs.tetherPopover].position();
           }
         }, true);
-        scope.$watch('tetherPopover.config.attachment', function () {
-          if (scope.tetherPopover.isActive()) {
-            scope.tetherPopover.position();
+        scope.$watch(attrs.tetherPopover + '.config.attachment', function () {
+          if (scope[attrs.tetherPopover].isActive()) {
+            scope[attrs.tetherPopover].position();
           }
         }, true);
+        if (config.closeOnBlue) {
+        }
       }
     };
   }
@@ -48,7 +48,7 @@ angular.module('ngTetherTooltip', ['ngTether']).directive('tetherTooltip', [
       link: function (scope, elem, attrs) {
         var tooltip = Tether(Utils.extendDeep({
             template: '<div class="tooltip fade-anim">{{ content }}</div>',
-            parentScope: scope.$parent,
+            parentScope: scope,
             tether: {
               target: elem[0],
               attachment: 'top center',
@@ -124,7 +124,6 @@ angular.module('ngTether', []).factory('Utils', [
       }
       function create(html, locals) {
         element = angular.element(html);
-        $animate.enter(element, angular.element(document.body));
         scope = parentScope.$new();
         if (locals) {
           scope.$locals = locals;
@@ -137,8 +136,11 @@ angular.module('ngTether', []).factory('Utils', [
         }
         $compile(element)(scope);
         scope.$on('$destroy', destroy);
-        attachTether();
-        tether.position();
+        $timeout(function () {
+          $animate.enter(element, angular.element(document.body));
+          attachTether();
+          tether.position();
+        });
       }
       // Attach tether and add it to the dom
       function enter(locals) {
@@ -173,6 +175,7 @@ angular.module('ngTether', []).factory('Utils', [
         leave: leave,
         position: position,
         isActive: isActive,
+        tether: element,
         config: config.tether
       };
     };
