@@ -1,15 +1,14 @@
-/*! angular-tether - v0.1.0 - 2014-04-20 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
+/*! angular-tether - v0.1.0 - 2014-04-21 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
   'Tether',
   '$parse',
   'Utils',
   function (Tether, $parse, Utils) {
     return {
-      template: '<div ng-transclude></div>',
-      transclude: true,
+      restrict: 'A',
+      scope: { tetherPopover: '=' },
       link: function (scope, elem, attrs) {
-        var config = $parse(attrs.popoverConfig)(scope);
-        scope[attrs.tetherPopover] = Tether(Utils.extendDeep({
-          parentScope: scope,
+        scope.tetherPopover = Tether(Utils.extendDeep({
+          parentScope: scope.$parent,
           tether: {
             target: elem[0],
             attachment: 'top center',
@@ -19,19 +18,19 @@
                 attachment: 'together'
               }]
           }
-        }, config));
-        scope.$watch(attrs.tetherPopover + '.config.targetAttachment', function () {
-          if (scope[attrs.tetherPopover].isActive()) {
-            scope[attrs.tetherPopover].position();
+        }, scope.tetherPopover));
+        scope.$watch('tetherPopover.config.targetAttachment', function () {
+          if (scope.tetherPopover.isActive()) {
+            scope.tetherPopover.position();
           }
         }, true);
-        scope.$watch(attrs.tetherPopover + '.config.attachment', function () {
-          if (scope[attrs.tetherPopover].isActive()) {
-            scope[attrs.tetherPopover].position();
+        scope.$watch('tetherPopover.config.attachment', function () {
+          if (scope.tetherPopover.isActive()) {
+            scope.tetherPopover.position();
           }
-        }, true);
-        if (config.closeOnBlue) {
-        }
+        }, true);  //        if (config.closeOnBlue) {
+                   //
+                   //        }
       }
     };
   }

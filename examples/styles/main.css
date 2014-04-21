@@ -501,3 +501,61 @@
     transform: perspective(300) rotateX(0deg);
     opacity: 1;
     visibility: visible; }
+
+.arrow-top:after {
+  content: "\00a0";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-width: 7px;
+  border-style: solid; }
+.arrow-top:after {
+  top: 0;
+  margin-top: -13px;
+  border-color: transparent transparent #daf3ff transparent;
+  left: 50%;
+  margin-left: -7px; }
+
+.angular-tether-tooltip.tether-element-attached-top.tether-element-attached-center.tether-target-attached-bottom.tether-target-attached-center:after {
+  content: "\00a0";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-width: 7px;
+  border-style: solid; }
+.angular-tether-tooltip.tether-element-attached-top.tether-element-attached-center.tether-target-attached-bottom.tether-target-attached-center:after {
+  bottom: 0;
+  margin-bottom: -13px;
+  border-color: #daf3ff transparent transparent transparent;
+  left: 50%;
+  margin-left: -7px; }
+.angular-tether-tooltip.tether-element-attached-right.tether-element-attached-middle.tether-target-attached-left.tether-target-attached-middle:after {
+  content: "\00a0";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-width: 7px;
+  border-style: solid; }
+.angular-tether-tooltip.tether-element-attached-right.tether-element-attached-middle.tether-target-attached-left.tether-target-attached-middle:after {
+  right: 0;
+  margin-right: -13px;
+  border-color: transparent transparent transparent #daf3ff;
+  top: 50%;
+  margin-top: -7px; }
+.angular-tether-tooltip.tether-element-attached-center.tether-element-attached-top.tether-target-attached-center.tether-target-attached-bottom:after {
+  content: "\00a0";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-width: 7px;
+  border-style: solid; }
+.angular-tether-tooltip.tether-element-attached-center.tether-element-attached-top.tether-target-attached-center.tether-target-attached-bottom:after {
+  top: 0;
+  margin-top: -13px;
+  border-color: transparent transparent #daf3ff transparent;
+  left: 50%;
+  margin-left: -7px; }

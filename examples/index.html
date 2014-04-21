@@ -21,14 +21,14 @@
 <body ng-app="app" class="Flexbox Flexbox__direction-rows Flexbox__box-align-center Flexbox__just-center">
 
 <script type="text/ng-template" id="popover.html">
-  <div class="Spacebox__small fade-anim" style="background-color: #daf3ff">
+  <div class="Spacebox__small fade-anim angular-tether-tooltip" style="background-color: #daf3ff">
     <div> position
-      <div><input ng-model="sharedLocalsWithCtrlPopover.config.attachment" type="text"/></div>
+      <div><input ng-model="popoverConfig.config.attachment" type="text"/></div>
       <div>
-        <button ng-click="sharedLocalsWithCtrlPopover.enter({content: 'ddd'})"
-                ng-disabled="sharedLocalsWithCtrlPopover.isActive()">enter
+        <button ng-click="popoverConfig.enter({content: 'ddd'})"
+                ng-disabled="popoverConfig.isActive()">enter
         </button>
-        <button ng-click="sharedLocalsWithCtrlPopover.leave()" ng-disabled="!sharedLocalsWithCtrlPopover.isActive()">leave</button>
+        <button ng-click="popoverConfig.leave()" ng-disabled="!popoverConfig.isActive()">leave</button>
       </div>
     </div>
   </div>
@@ -41,20 +41,20 @@
       <h2>Popover</h2>
 
       <div style="padding: 70px; background-color: #ceffee; display: inline-block;"
-           tether-popover="sharedLocalsWithCtrlPopover"
+           tether-popover="popoverConfig"
            popover-config="{template: 'popover.html'}">
 
         <div>
           position
           <div>
-            <input ng-model="sharedLocalsWithCtrlPopover.config.targetAttachment" type="text"/>
+            <input ng-model="popoverConfig.config.targetAttachment" type="text"/>
           </div>
           <div>
-            <button ng-click="sharedLocalsWithCtrlPopover.enter({content: 'ddd'})"
-                    ng-disabled="sharedLocalsWithCtrlPopover.isActive()">enter
+            <button ng-click="popoverConfig.enter({content: 'ddd'})"
+                    ng-disabled="popoverConfig.isActive()">enter
             </button>
-            <button ng-click="sharedLocalsWithCtrlPopover.leave()"
-                    ng-disabled="!sharedLocalsWithCtrlPopover.isActive()">
+            <button ng-click="popoverConfig.leave()"
+                    ng-disabled="!popoverConfig.isActive()">
               leave
             </button>
           </div>

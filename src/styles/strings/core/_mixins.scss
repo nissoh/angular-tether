@@ -331,61 +331,81 @@
     zoom: 1;
 }
 
+@mixin arrow($direction, $bg-color, $border-color: null, $width: 10px, $isCenter: false, $borderSize: 1) {
+  $selector : '&:after, &:before';
+  @if ($border-color == null) {
+    $selector : '&:after';
+  }
+  #{$selector} {
+    content: "\00a0";
+    // reduce the damage in FF3.0:
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-width: floor($width);
+    border-style: solid;
+  }
 
-@mixin arrow($direction, $bg-color, $border-color: transparent, $width: 10px, $isCenter : false, $borderSize: 1) {
-	&:after, &:before {
-		content: "\00a0";
-		// reduce the damage in FF3.0:
-		display: block;
-		position: absolute;
-		width: 0;
-		height: 0;
-		border-width: floor($width);
-		border-style: solid;
-		@if $direction == "top" {
-			top: 0;
-			margin-top: -$width * 2 + $borderSize;
-			border-color: transparent transparent $bg-color transparent;
-			@if $isCenter == true { left: 50%; margin-left:-$width; }
-		}
-		@if $direction == "bottom" {
-			bottom: 0;
-			margin-bottom: -$width * 2 + $borderSize;
-			border-color: $bg-color transparent transparent transparent;
-			@if $isCenter == true { left: 50%; margin-left:-$width; }
-		}
-		@if $direction == "left" {
-			left: 0;
-			margin-left: -$width * 2 + $borderSize;
-			border-color: transparent $bg-color transparent transparent;
-			@if $isCenter == true { top: 50%; margin-top:-$width; }
-		// creates the smaller  triangle
-		}
-		@if $direction == "right" {
-			right: 0;
-			margin-right: -$width * 2 + $borderSize;
-			border-color: transparent transparent transparent $bg-color;
-			@if $isCenter == true { top: 50%; margin-top:-$width; }
-		}
-	}
-	&:before {
-		@if $direction == "top" {
-			margin-top: -$width * 2;
-			border-color: transparent transparent $border-color transparent;
-		}
-		@if $direction == "bottom" {
-			margin-bottom: -$width * 2;
-			border-color: $border-color transparent transparent transparent;
-		}
-		@if $direction == "left" {
-			margin-left: -$width * 2;
-			border-color: transparent $border-color transparent transparent;
-		}
-		@if $direction == "right" {
-			margin-right: -$width * 2;
-			border-color: transparent transparent transparent $border-color;
-		}
-	}
+  &:after {
+    @if $direction == "top" {
+      top: 0;
+      margin-top: -$width * 2 + $borderSize;
+      border-color: transparent transparent $bg-color transparent;
+      @if $isCenter == true {
+        left: 50%;
+        margin-left: -$width;
+      }
+    }
+    @if $direction == "bottom" {
+      bottom: 0;
+      margin-bottom: -$width * 2 + $borderSize;
+      border-color: $bg-color transparent transparent transparent;
+      @if $isCenter == true {
+        left: 50%;
+        margin-left: -$width;
+      }
+    }
+    @if $direction == "left" {
+      left: 0;
+      margin-left: -$width * 2 + $borderSize;
+      border-color: transparent $bg-color transparent transparent;
+      @if $isCenter == true {
+        top: 50%;
+        margin-top: -$width;
+      }
+      // creates the smaller  triangle
+    }
+    @if $direction == "right" {
+      right: 0;
+      margin-right: -$width * 2 + $borderSize;
+      border-color: transparent transparent transparent $bg-color;
+      @if $isCenter == true {
+        top: 50%;
+        margin-top: -$width;
+      }
+    }
+  }
+  @if ($border-color) {
+    &:before {
+      @if $direction == "top" {
+        margin-top: -$width * 2;
+        border-color: transparent transparent $border-color transparent;
+      }
+      @if $direction == "bottom" {
+        margin-bottom: -$width * 2;
+        border-color: $border-color transparent transparent transparent;
+      }
+      @if $direction == "left" {
+        margin-left: -$width * 2;
+        border-color: transparent $border-color transparent transparent;
+      }
+      @if $direction == "right" {
+        margin-right: -$width * 2;
+        border-color: transparent transparent transparent $border-color;
+      }
+    }
+  }
 }
 
 // gives included element arrow on the reverted side

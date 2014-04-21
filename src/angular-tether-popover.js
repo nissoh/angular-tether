@@ -2,14 +2,14 @@
 angular.module('ngTetherPopover', ['ngTether'])
   .directive('tetherPopover', function (Tether, $parse, Utils) {
     return {
-      template: "<div ng-transclude></div>",
-      transclude: true,
+      restrict: 'A',
+      scope: {
+        tetherPopover: '='
+      },
       link: function (scope, elem, attrs) {
 
-        var config = $parse(attrs.popoverConfig)(scope);
-
-        scope[attrs.tetherPopover] = Tether(Utils.extendDeep({
-          parentScope: scope,
+        scope.tetherPopover = Tether(Utils.extendDeep({
+          parentScope: scope.$parent,
           tether : {
             target: elem[0],
             attachment: 'top center',
@@ -21,23 +21,23 @@ angular.module('ngTetherPopover', ['ngTether'])
               }
             ]
           }
-        }, config));
+        }, scope.tetherPopover));
         
-        scope.$watch(attrs.tetherPopover + '.config.targetAttachment', function(){
-          if (scope[attrs.tetherPopover].isActive()) {
-            scope[attrs.tetherPopover].position()
+        scope.$watch('tetherPopover.config.targetAttachment', function(){
+          if (scope.tetherPopover.isActive()) {
+            scope.tetherPopover.position()
           }
         }, true);
 
-        scope.$watch(attrs.tetherPopover + '.config.attachment', function(){
-          if (scope[attrs.tetherPopover].isActive()) {
-            scope[attrs.tetherPopover].position()
+        scope.$watch('tetherPopover.config.attachment', function(){
+          if (scope.tetherPopover.isActive()) {
+            scope.tetherPopover.position()
           }
         }, true);
 
-        if (config.closeOnBlue) {
-
-        }
+//        if (config.closeOnBlue) {
+//
+//        }
 
 
       }
