@@ -1,4 +1,4 @@
-/*! angular-tether - v0.1.0 - 2014-04-21 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
+/*! angular-tether - v0.1.0 - 2014-04-22 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
   'Tether',
   '$parse',
   'Utils',
@@ -9,6 +9,7 @@
       link: function (scope, elem, attrs) {
         scope.tetherPopover = Tether(Utils.extendDeep({
           parentScope: scope.$parent,
+          leaveOnBlur: true,
           tether: {
             target: elem[0],
             attachment: 'top center',
@@ -28,9 +29,7 @@
           if (scope.tetherPopover.isActive()) {
             scope.tetherPopover.position();
           }
-        }, true);  //        if (config.closeOnBlue) {
-                   //
-                   //        }
+        }, true);
       }
     };
   }
@@ -93,21 +92,22 @@ angular.module('ngTether', []).factory('Utils', [
 ]).factory('Tether', [
   '$compile',
   '$rootScope',
+  '$window',
   '$animate',
   '$controller',
   '$timeout',
   '$q',
   '$http',
   '$templateCache',
-  function ($compile, $rootScope, $animate, $controller, $timeout, $q, $http, $templateCache) {
+  function ($compile, $rootScope, $window, $animate, $controller, $timeout, $q, $http, $templateCache) {
     return function (config) {
       'use strict';
       if (!(!config.template ^ !config.templateUrl)) {
         throw new Error('Expected one of either `template` or `templateUrl`');
       }
       config.tether = config.tether || {};
-      var controller = config.controller || angular.noop, controllerAs = config.controllerAs, parentScope = config.parentScope || $rootScope, extend = angular.extend, element = null, scope, html, tether;
-      var target = config.tether.target = config.tether.target || document.body;
+      var controller = config.controller || angular.noop, controllerAs = config.controllerAs, parentScope = config.parentScope || $rootScope, extend = angular.extend, element = null, scope, html, tether, bodyEl = angular.element($window.document.body);
+      var target = config.tether.target = config.tether.target || bodyEl;
       // Attach a tether element and the target element.
       function attachTether() {
         tether = new Tether(extend({ element: element[0] }, config.tether));
@@ -136,10 +136,20 @@ angular.module('ngTether', []).factory('Utils', [
         $compile(element)(scope);
         scope.$on('$destroy', destroy);
         $timeout(function () {
-          $animate.enter(element, angular.element(document.body));
+          $animate.enter(element, bodyEl);
           attachTether();
           tether.position();
+          if (config.leaveOnBlur) {
+            bodyEl.on('click', leaveOnBlur);
+          }
         });
+      }
+      function leaveOnBlur(evt) {
+        if (evt.target !== evt.currentTarget) {
+          return;
+        }
+        bodyEl.off('click', leaveOnBlur);
+        return leave();
       }
       // Attach tether and add it to the dom
       function enter(locals) {
@@ -158,7 +168,7 @@ angular.module('ngTether', []).factory('Utils', [
       }
       function position() {
         if (element) {
-          $animate.move(element, angular.element(document.body));
+          $animate.move(element, bodyEl);
           attachTether();
         }
       }
@@ -174,7 +184,7 @@ angular.module('ngTether', []).factory('Utils', [
         leave: leave,
         position: position,
         isActive: isActive,
-        tether: element,
+        tether: html,
         config: config.tether
       };
     };

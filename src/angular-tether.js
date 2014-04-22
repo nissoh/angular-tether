@@ -19,7 +19,7 @@ angular.module('ngTether', [])
 
     return Utils;
   })
-  .factory('Tether', function ($compile, $rootScope, $animate, $controller, $timeout, $q, $http, $templateCache) {
+  .factory('Tether', function ($compile, $rootScope, $window, $animate, $controller, $timeout, $q, $http, $templateCache) {
     return function (config) {
       'use strict';
 
@@ -35,9 +35,10 @@ angular.module('ngTether', [])
         parentScope   = config.parentScope || $rootScope,
         extend        = angular.extend,
         element       = null,
-        scope, html, tether;
+        scope, html, tether,
+        bodyEl = angular.element($window.document.body);
 
-      var target = config.tether.target = config.tether.target || document.body;
+      var target = config.tether.target = config.tether.target || bodyEl;
 
 
       // Attach a tether element and the target element.
@@ -77,10 +78,22 @@ angular.module('ngTether', [])
         scope.$on('$destroy', destroy);
 
         $timeout(function(){
-          $animate.enter(element, angular.element(document.body));
+          $animate.enter(element, bodyEl);
           attachTether();
-          tether.position()
+          tether.position();
+
+          if (config.leaveOnBlur) {
+            bodyEl.on('click', leaveOnBlur);
+          }
         })
+      }
+
+      function leaveOnBlur(evt) {
+        if (evt.target !== evt.currentTarget) {
+          return;
+        }
+        bodyEl.off('click', leaveOnBlur);
+        return leave();
       }
 
       // Attach tether and add it to the dom
@@ -102,7 +115,7 @@ angular.module('ngTether', [])
 
       function position() {
         if (element) {
-          $animate.move(element, angular.element(document.body));
+          $animate.move(element, bodyEl);
           attachTether();
         }
       }
@@ -122,7 +135,7 @@ angular.module('ngTether', [])
         leave: leave,
         position: position,
         isActive: isActive,
-        tether: element,
+        tether: html,
         config : config.tether
       };
     };

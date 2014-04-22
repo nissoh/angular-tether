@@ -10,6 +10,7 @@ angular.module('ngTetherPopover', ['ngTether'])
 
         scope.tetherPopover = Tether(Utils.extendDeep({
           parentScope: scope.$parent,
+          leaveOnBlur: true,
           tether : {
             target: elem[0],
             attachment: 'top center',
@@ -34,10 +35,6 @@ angular.module('ngTetherPopover', ['ngTether'])
             scope.tetherPopover.position()
           }
         }, true);
-
-//        if (config.closeOnBlue) {
-//
-//        }
 
 
       }

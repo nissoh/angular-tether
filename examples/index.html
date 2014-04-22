@@ -35,44 +35,42 @@
 </script>
 
 
-  <div ng-controller="appCtrl" >
+<div ng-controller="appCtrl" >
 
-    <div>
-      <h2>Popover</h2>
+  <div>
+    <h2>Popover</h2>
 
-      <div style="padding: 70px; background-color: #ceffee; display: inline-block;"
-           tether-popover="popoverConfig"
-           popover-config="{template: 'popover.html'}">
+    <div style="padding: 70px; background-color: #ceffee; display: inline-block;"
+         tether-popover="popoverConfig"
+         popover-config="{template: 'popover.html'}">
 
+      <div>
+        position
         <div>
-          position
-          <div>
-            <input ng-model="popoverConfig.config.targetAttachment" type="text"/>
-          </div>
-          <div>
-            <button ng-click="popoverConfig.enter({content: 'ddd'})"
-                    ng-disabled="popoverConfig.isActive()">enter
-            </button>
-            <button ng-click="popoverConfig.leave()"
-                    ng-disabled="!popoverConfig.isActive()">
-              leave
-            </button>
-          </div>
+          <input ng-model="popoverConfig.config.targetAttachment" type="text"/>
         </div>
-
+        <div>
+          <button ng-click="popoverConfig.enter({content: 'ddd'})"
+                  ng-disabled="popoverConfig.isActive()">enter
+          </button>
+          <button ng-click="popoverConfig.leave()"
+                  ng-disabled="!popoverConfig.isActive()">
+            leave
+          </button>
+        </div>
       </div>
+
     </div>
-
-
-    <div>
-      <h2>Tooltip</h2>
-
-      <a href="#" tether-tooltip="10 dollah too buku">Me love you long time</a>
-    </div>
-
-
-
   </div>
+
+
+  <div>
+    <h2>Tooltip</h2>
+
+    <a href="#" tether-tooltip="10 dollah too buku">Me love you long time</a>
+  </div>
+
+</div>
 
 
  <div><h1>Scroll</h1></div>
