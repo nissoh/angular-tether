@@ -14,9 +14,8 @@ $ie9: true;
 $htmlDirection: ltr !default;
 
 
-@import "strings/core/mixins";
-@import "strings/generic/flexbox";
-@import "strings/generic/layout";
+@import "strings/defaults";
+
 
 @include spaceBox("tiny", "5px");
 @include spaceBox("small", "10px");
@@ -44,7 +43,7 @@ $htmlDirection: ltr !default;
 
 .flipInFade {
   @include transition(all .15s ease);
-  @include transform-origin(50%, 0);
+  @include transform-origin(50% 0);
   @include transform(perspective(300) rotateX(-25deg));
   opacity: 0;
   visibility: hidden;
