@@ -1,0 +1,3 @@
+[submodule "src/styles/strings"]
+	path = src/styles/strings
+	url = git://github.com/nissoh/Strings
