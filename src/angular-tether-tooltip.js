@@ -3,7 +3,7 @@ angular.module('ngTetherTooltip', ['ngTether'])
     return {
       scope: {
         content: '@tetherTooltip',
-        config: '=?tetherTooltipConfig'
+        config: '=config'
       },
       link: function (scope, elem, attrs) {
 

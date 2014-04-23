@@ -126,7 +126,13 @@ angular.module('ngTether', [])
       }
 
       function destroy() {
-        element = null;
+        if (isActive()) {
+          $animate.leave(element, function(){
+            element = null;
+          })
+        } else {
+          element = null;
+        }
       }
 
 

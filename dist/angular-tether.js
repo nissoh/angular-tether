@@ -1,11 +1,14 @@
-/*! angular-tether - v0.1.0 - 2014-04-22 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
+/*! angular-tether - v0.1.0 - 2014-04-23 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
   'Tether',
   '$parse',
   'Utils',
   function (Tether, $parse, Utils) {
     return {
       restrict: 'A',
-      scope: { tetherPopover: '=' },
+      scope: {
+        tetherPopover: '=',
+        config: '='
+      },
       link: function (scope, elem, attrs) {
         scope.tetherPopover = Tether(Utils.extendDeep({
           parentScope: scope.$parent,
@@ -19,7 +22,7 @@
                 attachment: 'together'
               }]
           }
-        }, scope.tetherPopover));
+        }, scope.config));
         scope.$watch('tetherPopover.config.targetAttachment', function () {
           if (scope.tetherPopover.isActive()) {
             scope.tetherPopover.position();
@@ -41,7 +44,7 @@ angular.module('ngTetherTooltip', ['ngTether']).directive('tetherTooltip', [
     return {
       scope: {
         content: '@tetherTooltip',
-        config: '=?tetherTooltipConfig'
+        config: '=config'
       },
       link: function (scope, elem, attrs) {
         var tooltip = Tether(Utils.extendDeep({
@@ -177,7 +180,13 @@ angular.module('ngTether', []).factory('Utils', [
         }
       }
       function destroy() {
-        element = null;
+        if (isActive()) {
+          $animate.leave(element, function () {
+            element = null;
+          });
+        } else {
+          element = null;
+        }
       }
       // bool. is tethered instance got destroyed
       function isActive() {

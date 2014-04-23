@@ -54,9 +54,6 @@ $htmlDirection: ltr !default;
   }
 }
 
-.arrow-top {
-  @include arrow('top', rgb(218, 243, 255), $border-color: null, $width: 7px, $isCenter : true)
-}
 
 .angular-tether-tooltip {
   &.tether-element-attached-top.tether-element-attached-center.tether-target-attached-bottom.tether-target-attached-center, {

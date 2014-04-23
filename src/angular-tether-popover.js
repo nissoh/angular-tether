@@ -4,7 +4,8 @@ angular.module('ngTetherPopover', ['ngTether'])
     return {
       restrict: 'A',
       scope: {
-        tetherPopover: '='
+        tetherPopover: '=',
+        config: '='
       },
       link: function (scope, elem, attrs) {
 
@@ -22,7 +23,7 @@ angular.module('ngTetherPopover', ['ngTether'])
               }
             ]
           }
-        }, scope.tetherPopover));
+        }, scope.config));
         
         scope.$watch('tetherPopover.config.targetAttachment', function(){
           if (scope.tetherPopover.isActive()) {

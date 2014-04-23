@@ -22,13 +22,13 @@
 
 <script type="text/ng-template" id="popover.html">
   <div class="Spacebox__small fade-anim angular-tether-tooltip" style="background-color: #daf3ff">
-    <div> position
-      <div><input ng-model="popoverConfig.config.attachment" type="text"/></div>
+    <div> positionsssss
+      <div><input ng-model="myPopover.config.attachment" type="text"/></div>
       <div>
-        <button ng-click="popoverConfig.enter({content: 'ddd'})"
-                ng-disabled="popoverConfig.isActive()">enter
+        <button ng-click="myPopover.enter({content: 'ddd'})"
+                ng-disabled="myPopover.isActive()">enter
         </button>
-        <button ng-click="popoverConfig.leave()" ng-disabled="!popoverConfig.isActive()">leave</button>
+        <button ng-click="myPopover.leave()" ng-disabled="!myPopover.isActive()">leave</button>
       </div>
     </div>
   </div>
@@ -41,20 +41,20 @@
     <h2>Popover</h2>
 
     <div style="padding: 70px; background-color: #ceffee; display: inline-block;"
-         tether-popover="popoverConfig"
-         popover-config="{template: 'popover.html'}">
+         tether-popover="myPopover"
+         config="popoverConfig">
 
       <div>
         position
         <div>
-          <input ng-model="popoverConfig.config.targetAttachment" type="text"/>
+          <input ng-model="myPopover.config.targetAttachment" type="text"/>
         </div>
         <div>
-          <button ng-click="popoverConfig.enter({content: 'ddd'})"
-                  ng-disabled="popoverConfig.isActive()">enter
+          <button ng-click="myPopover.enter({content: 'ddd'})"
+                  ng-disabled="myPopover.isActive()">enter
           </button>
-          <button ng-click="popoverConfig.leave()"
-                  ng-disabled="!popoverConfig.isActive()">
+          <button ng-click="myPopover.leave()"
+                  ng-disabled="!myPopover.isActive()">
             leave
           </button>
         </div>
