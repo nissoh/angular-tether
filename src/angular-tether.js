@@ -90,6 +90,7 @@ angular.module('ngTether', [])
 
       function leaveOnBlur(evt) {
         var target = evt.target;
+        if (!element || target === element[0]) return;
         while (target.parentElement !== null) {
           if (target.parentElement == element[0]) {
             return
