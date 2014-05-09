@@ -4,6 +4,14 @@
 	==============================================================
 */
 
+// Site direction
+// -----------------
+$htmlDirection: ltr !default;
+
+// Scaffolding
+// -------------------------
+$bodyBackground: #2db4ba !default;
+
 // IE compatibility
 // ----------------
 $ie8: true;
@@ -12,6 +20,9 @@ $ie9: true;
 // Site direction
 // -----------------
 $htmlDirection: ltr !default;
+
+
+$baseFontSize: 16px;
 
 
 @import "strings/defaults";
@@ -24,6 +35,48 @@ $htmlDirection: ltr !default;
 @include spaceBox("large", "50px");
 
 
+@include btn('btn-ghost') {
+  color: #888888;
+  background-color: #DCDCDC;
+  box-shadow: 0px -1px 0 0 rgba(255, 255, 255, 0.5),
+              0px -1px 0 0 rgba(0, 0, 0, 0.1) inset;
+
+
+  @include border-radius(9px);
+  -webkit-backface-visibility: hidden;
+  @include transition(
+          background-color .3s ease,
+          border .3s ease
+  );
+  .icon__arrow-bottom {
+    position: relative;
+    left: 7px;
+    top: 1px;
+    font-size: 16px;
+  }
+  &:hover, &:focus {
+  }
+  &.active {
+    background-color: #d1d1d1;
+  }
+}
+
+@include field('field', 28px) {
+  border: 1px solid #8da5ae;
+  background-color: transparent;
+  color: #262626;
+  @include border-radius(4px);
+  @include transition(border-color .3s ease);
+  &:focus {
+    border-color: #b2d0d9;
+  }
+}
+
+
+
+.main-intro {
+  min-height: 100%;
+}
 
 .fade-anim {
   &.ng-enter, &.ng-leave {
@@ -54,15 +107,22 @@ $htmlDirection: ltr !default;
   }
 }
 
+.tooltip {
+  max-width: 325px;
+  background-color: #f8f8f8;
+  padding: 15px;
+  border: 1px solid #dfdfdf;
+}
 
-.angular-tether-tooltip {
+
+.angular-tether-arrow {
   &.tether-element-attached-top.tether-element-attached-center.tether-target-attached-bottom.tether-target-attached-center, {
-    @include arrow('bottom', rgb(218, 243, 255), $border-color: null, $width: 7px, $isCenter: true);
+    @include arrow('bottom', #f8f8f8, $border-color: #dfdfdf, $width: 7px, $isCenter: true);
   }
   &.tether-element-attached-right.tether-element-attached-middle.tether-target-attached-left.tether-target-attached-middle, {
-    @include arrow('right', rgb(218, 243, 255), $border-color: null, $width: 7px, $isCenter: true);
+    @include arrow('right', #f8f8f8, $border-color: #dfdfdf, $width: 7px, $isCenter: true);
   }
   &.tether-element-attached-center.tether-element-attached-top.tether-target-attached-center.tether-target-attached-bottom {
-    @include arrow('top', rgb(218, 243, 255), $border-color: null, $width: 7px, $isCenter: true);
+    @include arrow('top', #f8f8f8, $border-color: #dfdfdf, $width: 7px, $isCenter: true);
   }
 }

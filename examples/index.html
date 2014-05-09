@@ -18,10 +18,21 @@
 
   <link rel="stylesheet" href="styles/main.css"/>
 </head>
-<body ng-app="app" class="Flexbox Flexbox__direction-rows Flexbox__box-align-center Flexbox__just-center">
+<body ng-app="app"
+      class="Flexbox Flexbox__direction-rows Flexbox__box-align-center Flexbox__just-center">
+
+<script type="text/ng-template" id="intro.html">
+  <div class="text-center">
+    <div class="fs1 text-light">Angular Tether</div>
+    <div class="fs5 text-light">A set of extensible <a href="http://tether.io"
+                                              config=""
+                                              tether-tooltip="&quot;A client-side library to make absolutely positioned elements attach to elements in the page efficiently.&quot;"
+        >Tethers</a> with the power of <a href="http://www.sanger.dk/" rel="nofollow"></a>Angular</div>
+  </div>
+</script>
 
 <script type="text/ng-template" id="popover.html">
-  <div class="Spacebox__small fade-anim angular-tether-tooltip" style="background-color: #daf3ff">
+  <div class="Spacebox__small fade-anim angular-tether-arrow tooltip">
     <div> positionsssss
       <div><input ng-model="myPopover.config.attachment" type="text"/></div>
       <div>
@@ -35,32 +46,44 @@
 </script>
 
 
-<div ng-controller="appCtrl" >
+<div ng-controller="appCtrl">
 
-  <div>
-    <h2>Popover</h2>
+  <div class="main-intro" id="intro"></div>
 
-    <div style="padding: 70px; background-color: #ceffee; display: inline-block;"
-         tether-popover="myPopover"
-         config="popoverConfig">
 
-      <div>
-        position
-        <div>
-          <input ng-model="myPopover.config.targetAttachment" type="text"/>
-        </div>
-        <div>
-          <button ng-click="myPopover.enter({content: 'ddd'})"
-                  ng-disabled="myPopover.isActive()">enter
-          </button>
-          <button ng-click="myPopover.leave()"
-                  ng-disabled="!myPopover.isActive()">
-            leave
-          </button>
-        </div>
+
+  <div class="Spacebox__lr-regular Spacebox__tb-medium">
+      <div class="fs3">Popover</div>
+
+      <div class="Flexbox">
+          <div class="Spacebox__r-medium Spacebox__tb-medium">
+              <div style="padding: 70px; background-color: #dfdfdf; display: inline-block;"
+                   tether-popover="myPopover"
+                   config="popoverConfig">
+
+                  <div>
+                      position
+                      <div class="Spacebox__tb-small">
+                          <input class="field" ng-model="myPopover.config.targetAttachment" type="text"/>
+                      </div>
+                      <div>
+                          <button class="btn-ghost" ng-click="myPopover.enter({content: 'ddd'})"
+                                  ng-disabled="myPopover.isActive()">enter
+                          </button>
+                          <button class="btn-ghost" ng-click="myPopover.leave()"
+                                  ng-disabled="!myPopover.isActive()">
+                              leave
+                          </button>
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+
+          <div class="Spacebox__l-medium Spacebox__tb-medium" style="border-left: 1px solid #d1d1d1;">
+              rewg ewrg werg werg werg weg werg werg wegr werg
+          </div>
       </div>
-
-    </div>
   </div>
 
 
@@ -73,16 +96,39 @@
 </div>
 
 
- <div><h1>Scroll</h1></div>
- <div><h1>Scroll</h1></div>
- <div><h1>Scroll</h1></div>
- <div><h1>Scroll</h1></div>
- <div><h1>Scroll</h1></div>
- <div><h1>Scroll</h1></div>
- <div><h1>Scroll</h1></div>
- <div><h1>Scroll</h1></div>
- <div><h1>Scroll</h1></div>
- <div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+<div><h1>Scroll</h1></div>
+
+
+<div class="main-intro" id="footer"></div>
 
 
 </body>

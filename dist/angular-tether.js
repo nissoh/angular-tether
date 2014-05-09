@@ -1,4 +1,4 @@
-/*! angular-tether - v0.1.0 - 2014-04-23 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
+/*! angular-tether - v0.1.0 - 2014-05-09 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
   'Tether',
   '$parse',
   'Utils',
@@ -149,6 +149,8 @@ angular.module('ngTether', []).factory('Utils', [
       }
       function leaveOnBlur(evt) {
         var target = evt.target;
+        if (!element || target === element[0])
+          return;
         while (target.parentElement !== null) {
           if (target.parentElement == element[0]) {
             return;
