@@ -161,11 +161,12 @@ html {
   }
 }
 
-.tooltip {
+.block-light-bordered {
   max-width: 325px;
   background-color: #f8f8f8;
   padding: 15px;
   border: 1px solid #dfdfdf;
+  z-index: 1050;
 }
 
 

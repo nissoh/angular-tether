@@ -632,7 +632,7 @@ blockquote {
   display: inline-block; }
 
 .field {
-  display: block;
+  display: inline-block;
   color: #5d5d5d;
   vertical-align: middle;
   padding-left: 0.5em;
@@ -1266,8 +1266,6 @@ blockquote {
   padding-right: 1em;
   padding-left: 1em;
   background-color: transparent; }
-  .btn-ghost:focus {
-    outline: 0; }
 
 
 
@@ -1474,6 +1472,9 @@ html {
     padding-left: 50px; }
 
 .btn-ghost {
+  line-height: 26px;
+  padding-right: 1em;
+  padding-left: 1em;
   color: #888888;
   background-color: #DCDCDC;
   box-shadow: 0px -1px 0 0 rgba(255, 255, 255, 0.5), 0px -1px 0 0 rgba(0, 0, 0, 0.1) inset;
@@ -1491,6 +1492,8 @@ html {
     cursor: default; }
   .btn-ghost.active {
     background-color: #d1d1d1; }
+  .btn-ghost:focus {
+    outline: 0; }
 
 .field {
   padding-top: 5px;
@@ -1543,11 +1546,12 @@ html {
     opacity: 1;
     visibility: visible; }
 
-.tooltip {
+.block-light-bordered {
   max-width: 325px;
   background-color: #f8f8f8;
   padding: 15px;
-  border: 1px solid #dfdfdf; }
+  border: 1px solid #dfdfdf;
+  z-index: 1050; }
 
 .angular-tether-arrow.tether-element-attached-center.tether-element-attached-top.tether-target-attached-center.tether-target-attached-bottom {
   margin-top: 10px; }
