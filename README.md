@@ -11,3 +11,5 @@ Extending angular tether roadmap in current development.
 [ ] Menu.
 ```
 
+Live example
+http://nissoh.github.io/angular-tether/
