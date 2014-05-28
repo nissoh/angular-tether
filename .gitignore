@@ -1,0 +1,10 @@
+.bower.status
+.grunt.status
+node_modules
+bower_components
+.tmp
+.sass-cache
+.idea
+*.iml
+grunt.status
+psd
