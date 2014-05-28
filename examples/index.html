@@ -6,8 +6,9 @@
 
 
   <!--<script src="../bower_components/jquery/dist/jquery.js"></script>-->
-
+  <script src="../bower_components/ace-builds/src-min-noconflict/ace.js"></script>
   <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/angular-ui-ace/ui-ace.js"></script>
   <script src="../bower_components/angular-animate/angular-animate.js"></script>
   <script src="../bower_components/tether/tether.js"></script>
   <script src="../src/angular-tether.js"></script>
@@ -24,10 +25,8 @@
 <script type="text/ng-template" id="intro.html">
   <div class="text-center">
     <div class="fs1 text-light">Angular Tether</div>
-    <div class="fs5 text-light">A set of extensible <a href="http://tether.io"
-                                              config=""
-                                              tether-tooltip="&quot;A client-side library to make absolutely positioned elements attach to elements in the page efficiently.&quot;"
-        >Tethers</a> with the power of <a href="http://www.sanger.dk/" rel="nofollow"></a>Angular</div>
+    <div class="fs5 text-light">A set of extensible <a href="http://tether.io" config="" tether-tooltip="&quot;A client-side library to make absolutely positioned elements attach to elements in the page efficiently.&quot;"
+        >Tethers</a> with using <a href="http://www.sanger.dk/" rel="nofollow"></a>Angular</div>
   </div>
 </script>
 
@@ -56,32 +55,34 @@
       <div class="fs3">Popover</div>
 
       <div class="Flexbox">
-          <div class="Spacebox__r-medium Spacebox__tb-medium">
-              <div style="padding: 70px; background-color: #dfdfdf; display: inline-block;"
-                   tether-popover="myPopover"
-                   config="popoverConfig">
+          <div class="Spacebox__r-medium Spacebox__tb-medium" ng-include="getTemplate()">
+<script type="text/ng-template" id="popoverDemo.html">
+<div style="padding: 70px; background-color: #F0F0F0; display: inline-block;"
+   tether-popover="myPopover"
+   config="popoverConfig">
 
-                  <div>
-                      position
-                      <div class="Spacebox__tb-small">
-                          <input class="field" ng-model="myPopover.config.targetAttachment" type="text"/>
-                      </div>
-                      <div>
-                          <button class="btn-ghost" ng-click="myPopover.enter({content: 'ddd'})"
-                                  ng-disabled="myPopover.isActive()">enter
-                          </button>
-                          <button class="btn-ghost" ng-click="myPopover.leave()"
-                                  ng-disabled="!myPopover.isActive()">
-                              leave
-                          </button>
-                      </div>
-                  </div>
-
-              </div>
+  <div>
+      position
+      <div class="Spacebox__tb-small">
+          <input class="field"
+                 ng-model="myPopover.config.targetAttachment" type="text"/>
+      </div>
+      <div>
+          <button class="btn-ghost" ng-click="myPopover.enter({content: 'ddd'})"
+                  ng-disabled="myPopover.isActive()">enter
+          </button>
+          <button class="btn-ghost" ng-click="myPopover.leave()"
+                  ng-disabled="!myPopover.isActive()">
+              leave
+          </button>
+      </div>
+  </div>
+</div>
+</script>
           </div>
 
-          <div class="Spacebox__l-medium Spacebox__tb-medium" style="border-left: 1px solid #d1d1d1;">
-              rewg ewrg werg werg werg weg werg werg wegr werg
+          <div class="Spacebox__l-medium Spacebox__tb-medium" style="border-left: 1px solid #E4E4E4;">
+              <div ui-ace="editorConfig" style="width: 500px; height: 500px"></div>
           </div>
       </div>
   </div>

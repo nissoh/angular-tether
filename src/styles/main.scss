@@ -4,28 +4,83 @@
 	==============================================================
 */
 
-// Site direction
-// -----------------
-$htmlDirection: ltr !default;
+@import "strings/defaults";
+
 
 // Scaffolding
 // -------------------------
-$bodyBackground: #2db4ba !default;
+$bodyBackground: #FBFBFB;
 
-// IE compatibility
-// ----------------
-$ie8: true;
-$ie9: true;
 
 // Site direction
 // -----------------
-$htmlDirection: ltr !default;
+$htmlDirection: ltr;
 
 
 $baseFontSize: 16px;
 
+body {
+  margin: 0;
+  font-family: $baseFontFamily;
+  font-size: $baseFontSize;
+  line-height: $baseLineHeight;
+  background-color: $bodyBackground;
+  font-weight: 300;
+  color: $textColor;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
 
-@import "strings/defaults";
+  @if ($htmlDirection == rtl) {
+    direction: rtl;
+  }
+}
+
+// Links
+// -------------------------
+
+a {
+  color: $linkColor;
+  text-decoration: none;
+  &:hover {
+    color: $linkColorHover;
+    text-decoration: none;
+  }
+}
+
+p a:hover {
+  color: $linkColorHover;
+  text-decoration: underline;
+}
+
+
+::-webkit-scrollbar {
+  border: 1px solid #E6E6E6;
+  width: 8px;
+  height: 8px;
+  padding: 0 2px;
+  background-color: #F1F1F1;
+}
+
+::-webkit-scrollbar-track {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(146, 146, 146, 0.80);
+  &:hover {
+    background-color: rgba(82, 82, 82, 0.80);
+  }
+}
+
+html {
+  height: 100% !important;
+}
+
+
+
+
 
 
 @include spaceBox("tiny", "5px");
@@ -48,13 +103,12 @@ $baseFontSize: 16px;
           background-color .3s ease,
           border .3s ease
   );
-  .icon__arrow-bottom {
-    position: relative;
-    left: 7px;
-    top: 1px;
-    font-size: 16px;
-  }
   &:hover, &:focus {
+    background-color: #e4e4e4;
+  }
+  &[disabled] {
+    opacity: 0.3;
+    cursor: default;
   }
   &.active {
     background-color: #d1d1d1;
@@ -115,14 +169,25 @@ $baseFontSize: 16px;
 }
 
 
+
 .angular-tether-arrow {
-  &.tether-element-attached-top.tether-element-attached-center.tether-target-attached-bottom.tether-target-attached-center, {
+  &.tether-element-attached-center.tether-element-attached-top.tether-target-attached-center.tether-target-attached-bottom {
+    margin-top: 10px;
+    @include arrow('top', #f8f8f8, $border-color: #dfdfdf, $width: 7px, $isCenter: true);
+  }
+  &.tether-element-attached-center.tether-target-attached-center.tether-element-attached-bottom.tether-target-attached-top, {
+    margin-top: -10px;
     @include arrow('bottom', #f8f8f8, $border-color: #dfdfdf, $width: 7px, $isCenter: true);
+  }
+  &.tether-element-attached-middle.tether-element-attached-left.tether-target-attached-middle.tether-target-attached-right, {
+    @include arrow('left', #f8f8f8, $border-color: #dfdfdf, $width: 7px, $isCenter: true);
+    margin-left: 10px;
   }
   &.tether-element-attached-right.tether-element-attached-middle.tether-target-attached-left.tether-target-attached-middle, {
     @include arrow('right', #f8f8f8, $border-color: #dfdfdf, $width: 7px, $isCenter: true);
+    margin-left: -10px;
   }
-  &.tether-element-attached-center.tether-element-attached-top.tether-target-attached-center.tether-target-attached-bottom {
-    @include arrow('top', #f8f8f8, $border-color: #dfdfdf, $width: 7px, $isCenter: true);
-  }
+}
+.ace_editor {
+  height: 180px;
 }

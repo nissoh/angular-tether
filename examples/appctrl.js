@@ -1,7 +1,32 @@
-var app = angular.module('app', ['ng', 'ngAnimate', 'ngTetherTooltip', 'ngTetherPopover']);
+var app = angular.module('app', ['ng', 'ngAnimate', 'ngTetherTooltip', 'ngTetherPopover', 'ui.ace']);
 
 
-app.controller('appCtrl', ['$scope','Tether',function($scope, Tether){
+app.controller('appCtrl', function($scope, Tether, $templateCache){
+
+  $scope.aceLoaded = function(_editor) {
+    _editor.renderer.setShowGutter(false);
+    _editor.renderer.setHighlightGutterLine(false);
+    _editor.getSession().setValue($templateCache.get('popoverDemo.html'));
+//    _editor.setReadOnly(true);
+  };
+
+  $scope.getTemplate = function(){
+    return 'popoverDemo.html'
+  };
+
+  $scope.aceChanged = function(args) {
+    var changed = args[0];
+    var _editor = args[1];
+    $templateCache.put('popoverDemo.html', _editor.getSession().getValue());
+
+  };
+
+  $scope.editorConfig = {
+    showLineNumbers: false,
+    mode: 'html',
+    onLoad: $scope.aceLoaded,
+    onChange: $scope.aceChanged
+  };
 
 
   $scope.intro = Tether({
@@ -50,9 +75,7 @@ app.controller('appCtrl', ['$scope','Tether',function($scope, Tether){
     template: 'popover.html',
     tether: {
       attachment: 'middle right',
-      targetAttachment: 'middle left',
-      offset: '0 10px',
-      targetOffset: '20px 0'
+      targetAttachment: 'middle left'
     }
   };
 
@@ -79,7 +102,7 @@ app.controller('appCtrl', ['$scope','Tether',function($scope, Tether){
 //    ]
 //  };
 
-}]);
+});
 
 
 // SmoothScroll for websites v1.2.1

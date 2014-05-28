@@ -61,7 +61,7 @@ angular.module('ngTether', [])
       }
 
       function create(html, locals) {
-        element = angular.element(html);
+        element = angular.element(html.trim());
 
         scope = parentScope.$new();
         if (locals) {
@@ -77,8 +77,9 @@ angular.module('ngTether', [])
         $compile(element)(scope);
         scope.$on('$destroy', destroy);
 
+        $animate.enter(element, bodyEl);
+
         $timeout(function(){
-          $animate.enter(element, bodyEl);
           attachTether();
           tether.position();
 
