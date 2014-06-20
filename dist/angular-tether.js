@@ -1,4 +1,4 @@
-/*! angular-tether - v0.1.0 - 2014-05-28 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
+/*! angular-tether - v0.1.1 - 2014-06-20 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.jQuery, root.jade, root._)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
   'Tether',
   '$parse',
   'Utils',
@@ -10,7 +10,7 @@
         config: '='
       },
       link: function (scope, elem, attrs) {
-        scope.tetherPopover = Tether(Utils.extendDeep({
+        scope.tetherPopover = new Tether(Utils.extendDeep({
           parentScope: scope.$parent,
           leaveOnBlur: true,
           tether: {
@@ -47,7 +47,7 @@ angular.module('ngTetherTooltip', ['ngTether']).directive('tetherTooltip', [
         config: '=config'
       },
       link: function (scope, elem, attrs) {
-        var tooltip = Tether(Utils.extendDeep({
+        var tooltip = new Tether(Utils.extendDeep({
             template: '<div class="tooltip fade-anim">{{ content }}</div>',
             parentScope: scope,
             tether: {
@@ -110,7 +110,6 @@ angular.module('ngTether', []).factory('Utils', [
       }
       config.tether = config.tether || {};
       var controller = config.controller || angular.noop, controllerAs = config.controllerAs, parentScope = config.parentScope || $rootScope, extend = angular.extend, element = null, scope, html, tether, bodyEl = angular.element($window.document.body);
-      var target = config.tether.target = config.tether.target || bodyEl;
       // Attach a tether element and the target element.
       function attachTether() {
         tether = new Tether(extend({ element: element[0] }, config.tether));

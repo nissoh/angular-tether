@@ -38,9 +38,6 @@ angular.module('ngTether', [])
         scope, html, tether,
         bodyEl = angular.element($window.document.body);
 
-      var target = config.tether.target = config.tether.target || bodyEl;
-
-
       // Attach a tether element and the target element.
       function attachTether() {
         tether = new Tether(extend({

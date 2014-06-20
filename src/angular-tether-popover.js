@@ -9,7 +9,7 @@ angular.module('ngTetherPopover', ['ngTether'])
       },
       link: function (scope, elem, attrs) {
 
-        scope.tetherPopover = Tether(Utils.extendDeep({
+        scope.tetherPopover = new Tether(Utils.extendDeep({
           parentScope: scope.$parent,
           leaveOnBlur: true,
           tether : {
