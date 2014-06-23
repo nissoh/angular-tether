@@ -27,6 +27,7 @@ angular.module('ngTether', [])
         throw new Error('Expected one of either `template` or `templateUrl`');
       }
 
+
       config.tether = config.tether || {};
 
       var

@@ -76,11 +76,11 @@ module.exports = function (grunt) {
           '<%= grunt.template.today("yyyy-mm-dd") %> */' +
             '(function (root, factory) {' +
               'if (typeof define === "function" && define.amd) {' +
-              'define(["tether"], factory);' +
+              'define(["angular-tether"], factory);' +
               '} else if (typeof exports === "object") {' +
               'module.exports = factory(require("tether"));' +
               '} else {' +
-              'root.test = factory(root.jQuery, root.jade, root._)};' +
+              'root.test = factory(root.Tether)};' +
               '}(this, function(Tether) {',
         footer: '}));'
       },
