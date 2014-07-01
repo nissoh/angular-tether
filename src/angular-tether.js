@@ -3,18 +3,13 @@
 angular.module('ngTether', [])
   .factory('Utils', function($compile) {
     var Utils = {};
-
-    Utils.extendDeep = function(destination, source) {
-      for (var property in source) {
-        if (source[property] && source[property].constructor &&
-          source[property].constructor === Object) {
-          destination[property] = destination[property] || {};
-          arguments.callee(destination[property], source[property]);
-        } else {
-          destination[property] = source[property];
-        }
-      }
-      return destination;
+    Utils.extendDeep = function deepExtend(target, source) {
+      for (var prop in source)
+        if (prop in target)
+          angular.extend(target[prop], source[prop]);
+        else
+          target[prop] = source[prop];
+      return target;
     };
 
     return Utils;
@@ -113,7 +108,7 @@ angular.module('ngTether', [])
         if (element) {
           $timeout(function(){
             tether.destroy();
-            $animate.leave(element);
+            element && $animate.leave(element);
           });
         }
       }

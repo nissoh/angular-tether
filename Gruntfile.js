@@ -76,7 +76,7 @@ module.exports = function (grunt) {
           '<%= grunt.template.today("yyyy-mm-dd") %> */' +
             '(function (root, factory) {' +
               'if (typeof define === "function" && define.amd) {' +
-              'define(["angular-tether"], factory);' +
+              'define(["tether"], factory);' +
               '} else if (typeof exports === "object") {' +
               'module.exports = factory(require("tether"));' +
               '} else {' +
