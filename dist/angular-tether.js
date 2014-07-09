@@ -1,4 +1,4 @@
-/*! angular-tether - v0.1.3 - 2014-07-01 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.Tether)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
+/*! angular-tether - v0.1.3 - 2014-07-07 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.Tether)};}(this, function(Tether) {angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
   'Tether',
   '$parse',
   'Utils',
@@ -133,7 +133,7 @@ angular.module('ngTether', []).factory('Utils', [
           scope[controllerAs] = ctrl;
         }
         $compile(element)(scope);
-        scope.$on('$destroy', destroy);
+        scope.$on('$destroy', leave);
         $timeout(function () {
           $animate.enter(element, bodyEl);
           attachTether();
@@ -153,7 +153,6 @@ angular.module('ngTether', []).factory('Utils', [
           }
           target = target.parentElement;
         }
-        bodyEl.off('click', leaveOnBlur);
         return leave();
       }
       // Attach tether and add it to the dom
@@ -164,26 +163,26 @@ angular.module('ngTether', []).factory('Utils', [
       }
       // Detach the tether and remove it from the dom
       function leave() {
-        if (element) {
-          $timeout(function () {
-            tether.destroy();
-            element && $animate.leave(element);
-          });
+        if (!isActive()) {
+          if (element) {
+            element = null;
+          }
+          return false;
         }
+        if (config.leaveOnBlur) {
+          bodyEl.off('click', leaveOnBlur);
+        }
+        tether.destroy();
+        $timeout(function () {
+          element && $animate.leave(element, function () {
+            element = null;
+          });
+        });
       }
       function position() {
         if (element) {
           $animate.move(element, bodyEl);
           attachTether();
-        }
-      }
-      function destroy() {
-        if (isActive()) {
-          $animate.leave(element, function () {
-            element = null;
-          });
-        } else {
-          element = null;
         }
       }
       // bool. is tethered instance got destroyed

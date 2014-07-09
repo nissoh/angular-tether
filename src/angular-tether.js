@@ -68,7 +68,7 @@ angular.module('ngTether', [])
           scope[controllerAs] = ctrl;
         }
         $compile(element)(scope);
-        scope.$on('$destroy', destroy);
+        scope.$on('$destroy', leave);
 
 
         $timeout(function(){
@@ -91,8 +91,6 @@ angular.module('ngTether', [])
           }
           target = target.parentElement;
         }
-
-        bodyEl.off('click', leaveOnBlur);
         return leave();
       }
 
@@ -105,28 +103,30 @@ angular.module('ngTether', [])
 
       // Detach the tether and remove it from the dom
       function leave() {
-        if (element) {
-          $timeout(function(){
-            tether.destroy();
-            element && $animate.leave(element);
-          });
+        if (!isActive()) {
+          if(element) {
+            element = null;
+          }
+          return false;
         }
+
+        if (config.leaveOnBlur) {
+          bodyEl.off('click', leaveOnBlur);
+        }
+        tether.destroy();
+
+        $timeout(function(){
+          element && $animate.leave(element, function(){
+            element = null;
+          });
+
+        });
       }
 
       function position() {
         if (element) {
           $animate.move(element, bodyEl);
           attachTether();
-        }
-      }
-
-      function destroy() {
-        if (isActive()) {
-          $animate.leave(element, function(){
-            element = null;
-          })
-        } else {
-          element = null;
         }
       }
 
