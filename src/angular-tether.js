@@ -130,7 +130,6 @@ angular.module('ngTether', [])
         }
       }
 
-
       // bool. is tethered instance got destroyed
       function isActive() {
         return tether && tether.enabled;

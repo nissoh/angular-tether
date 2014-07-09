@@ -81,7 +81,8 @@ module.exports = function (grunt) {
               'module.exports = factory(require("tether"));' +
               '} else {' +
               'root.test = factory(root.Tether)};' +
-              '}(this, function(Tether) {',
+              '}(this, function(Tether) {' +
+              ' ',
         footer: '}));'
       },
       dist: {
