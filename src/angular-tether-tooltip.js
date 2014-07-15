@@ -5,7 +5,7 @@ angular.module('ngTetherTooltip', ['ngTether'])
         content: '@tetherTooltip',
         config: '=config'
       },
-      link: function (scope, elem, attrs) {
+      link: function  postLink(scope, elem, attrs) {
 
         var tooltip = new Tether(Utils.extendDeep({
           template: '<div class="tooltip fade-anim">{{ content }}</div>',

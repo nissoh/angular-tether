@@ -1,15 +1,17 @@
 {
   "name": "angular-tether",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "./dist/angular-tether.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/nissoh/angular-tether.git"
   },
   "dependencies": {
-    "angular": "~1.2.18",
+    "angular": "~1.2",
     "tether": "~0.6.5",
-    "angular-animate": "~1.2.18",
+    "angular-animate": "~1.2.18"
+  },
+  "devDependencies": {
     "angular-ui-ace": "~0.1.1"
   },
   "ignore": [

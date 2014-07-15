@@ -1,4 +1,4 @@
-/*! angular-tether - v0.1.4 - 2014-07-09 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.Tether)};}(this, function(Tether) { angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
+/*! angular-tether - v0.1.5 - 2014-07-15 */(function (root, factory) {if (typeof define === "function" && define.amd) {define(["tether"], factory);} else if (typeof exports === "object") {module.exports = factory(require("tether"));} else {root.test = factory(root.Tether)};}(this, function(Tether) { angular.module('ngTetherPopover', ['ngTether']).directive('tetherPopover', [
   'Tether',
   '$parse',
   'Utils',
@@ -9,7 +9,7 @@
         tetherPopover: '=',
         config: '='
       },
-      link: function (scope, elem, attrs) {
+      link: function postLink(scope, elem, attrs) {
         scope.tetherPopover = new Tether(Utils.extendDeep({
           parentScope: scope.$parent,
           leaveOnBlur: true,
@@ -46,7 +46,7 @@ angular.module('ngTetherTooltip', ['ngTether']).directive('tetherTooltip', [
         content: '@tetherTooltip',
         config: '=config'
       },
-      link: function (scope, elem, attrs) {
+      link: function postLink(scope, elem, attrs) {
         var tooltip = new Tether(Utils.extendDeep({
             template: '<div class="tooltip fade-anim">{{ content }}</div>',
             parentScope: scope,
@@ -92,6 +92,7 @@ angular.module('ngTether', []).factory('Utils', [
 ]).factory('Tether', [
   '$compile',
   '$rootScope',
+  '$log',
   '$window',
   '$animate',
   '$controller',
@@ -99,7 +100,7 @@ angular.module('ngTether', []).factory('Utils', [
   '$q',
   '$http',
   '$templateCache',
-  function ($compile, $rootScope, $window, $animate, $controller, $timeout, $q, $http, $templateCache) {
+  function ($compile, $rootScope, $log, $window, $animate, $controller, $timeout, $q, $http, $templateCache) {
     return function (config) {
       'use strict';
       if (!(!config.template ^ !config.templateUrl)) {
@@ -111,20 +112,20 @@ angular.module('ngTether', []).factory('Utils', [
       function attachTether() {
         tether = new Tether(extend({ element: element[0] }, config.tether));
       }
-      if (config.template) {
-        var deferred = $q.defer();
-        deferred.resolve($templateCache.get(config.template) || config.template);
-        html = deferred.promise;
-      } else {
-        html = $http.get(config.templateUrl, { cache: $templateCache }).then(function (response) {
-          return response.data;
-        });
+      function templateDfd() {
+        var template = config.template ? $templateCache.get(config.template) || config.template : $http.get(config.templateUrl, { cache: $templateCache }).then(function (resp) {
+            return resp.data;
+          });
+        return $q.when(template);
       }
       function create(html, locals) {
         element = angular.element(html.trim());
         scope = parentScope.$new();
+        // assign locals being passed on enter method.
         if (locals) {
-          scope.$locals = locals;
+          for (var prop in locals) {
+            scope[prop] = locals[prop];
+          }
         }
         if (config.controller) {
           var ctrl = $controller(controller, { $scope: scope });
@@ -133,20 +134,25 @@ angular.module('ngTether', []).factory('Utils', [
           scope[controllerAs] = ctrl;
         }
         $compile(element)(scope);
-        scope.$on('$destroy', leave);
+        scope.$on('$destroy', destroy);
+        // Hack. html is being compiled asynchronously the dimensions of the element
+        // would most likley have a different dimensions after compilation
         $timeout(function () {
+          if (!element)
+            return;
           $animate.enter(element, bodyEl);
           attachTether();
           tether.position();
           if (config.leaveOnBlur) {
-            bodyEl.on('click', leaveOnBlur);
+            bodyEl.on('click touchend', leaveOnBlur);
           }
-        });
+        }, 15);
       }
       function leaveOnBlur(evt) {
         var target = evt.target;
-        if (!element || target === element[0])
+        if (!element || target === element[0]) {
           return;
+        }
         while (target.parentElement !== null) {
           if (target.parentElement == element[0]) {
             return;
@@ -157,27 +163,37 @@ angular.module('ngTether', []).factory('Utils', [
       }
       // Attach tether and add it to the dom
       function enter(locals) {
-        html.then(function (html) {
+        if (element) {
+          return $log.debug('Tethered instance is already active; now toggling');
+        }
+        templateDfd().then(function (html) {
           create(html, locals);
         });
       }
       // Detach the tether and remove it from the dom
       function leave() {
+        if (config.leaveOnBlur) {
+          bodyEl.off('click touchend', leaveOnBlur);
+        }
         if (!isActive()) {
           if (element) {
             element = null;
           }
           return false;
         }
-        if (config.leaveOnBlur) {
-          bodyEl.off('click', leaveOnBlur);
-        }
         tether.destroy();
         $timeout(function () {
           element && $animate.leave(element, function () {
-            element = null;
+            destroy();
           });
         });
+      }
+      function destroy() {
+        if (!element) {
+          return;
+        }
+        element.remove();
+        element = null;
       }
       function position() {
         if (element) {
