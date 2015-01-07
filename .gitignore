@@ -1,7 +1,7 @@
 .bower.status
 .grunt.status
 node_modules
-bower_components
+bower_components/ace-builds
 .tmp
 .sass-cache
 .idea
