@@ -1,5 +1,5 @@
 
-angular.module('app', ['ng', 'ngAnimate', 'ngTetherTooltip', 'ngTetherPopover', 'ui.ace'])
+angular.module('app', ['ng', 'ngAnimate', 'ngTetherTooltip', 'ngTetherPopover'])
     .controller('appCtrl', function($scope, Tether, $templateCache) {
 
       $scope.aceLoaded = function(_editor) {
