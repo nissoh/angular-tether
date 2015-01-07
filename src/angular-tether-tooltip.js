@@ -1,13 +1,16 @@
-angular.module('ngTetherTooltip', ['ngTether'])
-  .directive('tetherTooltip', function (Tether, Utils) {
+(function(){
+  angular.module('ngTetherTooltip', ['ngTether'])
+      .directive('tetherTooltip', tetherTooltipDirective);
+
+  function tetherTooltipDirective(Tether, TetherUtils) {
     return {
       scope: {
         content: '@tetherTooltip',
         config: '=config'
       },
-      link: function  postLink(scope, elem, attrs) {
+      link: function  postLink(scope, elem) {
 
-        var tooltip = new Tether(Utils.extendDeep({
+        var tooltip = new Tether(TetherUtils.extendDeep({
           template: '<div class="tooltip fade-anim">{{ content }}</div>',
           parentScope: scope,
           tether: {
@@ -26,15 +29,11 @@ angular.module('ngTetherTooltip', ['ngTether'])
           tooltip.enter();
         });
         elem.on('mouseleave', function(){
-          tooltip.leave();
+          scope.$apply(tooltip.leave);
         });
-
-        scope.$on('$destroy', function(){
-          elem.unbind('hover');
-          elem.unbind('mouseleave');
-        });
-
 
       }
     };
-  });
+  }
+
+}());

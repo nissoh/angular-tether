@@ -6,10 +6,10 @@ module.exports = function (grunt) {
   grunt.initConfig({
     pkg: require('./bower.json'),
     paths : {
-      src : "src",
-      dist : "dist",
-      demo : "examples",
-      tmp : ".tmp"
+      src : 'src',
+      dist : 'dist',
+      demo : 'examples',
+      tmp : '.tmp'
     },
     watch: {
       sass: {
@@ -70,21 +70,21 @@ module.exports = function (grunt) {
       }
     },
     concat: {
-      options: {
-        banner:
-          '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-          '<%= grunt.template.today("yyyy-mm-dd") %> */' +
-            '(function (root, factory) {' +
-              'if (typeof define === "function" && define.amd) {' +
-              'define(["tether"], factory);' +
-              '} else if (typeof exports === "object") {' +
-              'module.exports = factory(require("tether"));' +
-              '} else {' +
-              'root.test = factory(root.Tether)};' +
-              '}(this, function(Tether) {' +
-              ' ',
-        footer: '}));'
-      },
+      //options: {
+      //  banner:
+      //    '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+      //    '<%= grunt.template.today("yyyy-mm-dd") %> */' +
+      //      '(function (root, factory) {' +
+      //        'if (typeof define === "function" && define.amd) {' +
+      //        'define(["tether"], factory);' +
+      //        '} else if (typeof exports === "object") {' +
+      //        'module.exports = factory(require("tether"));' +
+      //        '} else {' +
+      //        'root.test = factory(root.Tether)};' +
+      //        '}(this, function(Tether) {' +
+      //        ' ',
+      //  footer: '}));'
+      //},
       dist: {
         src: ['<%= paths.tmp %>/**/*.js'],
         dest: '<%= paths.dist %>/angular-tether.js'

@@ -1,162 +1,180 @@
+(function(Tether, angular) {
+  angular.module('ngTether', [])
+      .factory('TetherUtils', tetherUtils)
+      .factory('Tether', tetherInstanceDirective);
 
 
-angular.module('ngTether', [])
-  .factory('Utils', function($compile) {
+  function tetherUtils() {
     var Utils = {};
     Utils.extendDeep = function deepExtend(target, source) {
-      for (var prop in source)
-        if (prop in target)
-          angular.extend(target[prop], source[prop]);
-        else
-          target[prop] = source[prop];
+      for (var key in source) {
+        if (key in target) {
+          angular.extend(target[key], source[key]);
+        } else {
+          target[key] = source[key];
+        }
+      }
       return target;
     };
 
     return Utils;
-  })
-  .factory('Tether', function ($compile, $rootScope, $log, $window, $animate, $controller, $timeout, $q, $http, $templateCache) {
-    return function (config) {
+  }
+
+  tetherInstanceDirective.$inject = [
+    '$compile',
+    '$rootScope',
+    '$document',
+    '$templateCache',
+    '$animate',
+    '$controller',
+    '$q',
+    '$http'
+  ];
+
+  function tetherInstanceDirective($compile, $rootScope, $document, $templateCache,
+                                   $animate, $controller, $q, $http) {
+    return function(config) {
       'use strict';
 
-      if (!(!config.template ^ !config.templateUrl)) {
+      if (!(config.template || config.templateUrl)) {
         throw new Error('Expected one of either `template` or `templateUrl`');
+      }
+
+      if (!Tether) {
+        throw new Error('Tether is required`');
       }
 
 
       config.tether = config.tether || {};
 
       var
-        controller    = config.controller || angular.noop,
-        controllerAs  = config.controllerAs,
-        parentScope   = config.parentScope || $rootScope,
-        extend        = angular.extend,
-        element       = null,
-        scope, html, tether,
-        bodyEl = angular.element($window.document.body);
+          controller = config.controller || angular.noop,
+          controllerAs = config.controllerAs,
+          parentScope = config.parentScope || $rootScope,
+          extend = angular.extend,
+          element = null,
+          scope,
+          activeAnimatePromise;
 
-      // Attach a tether element and the target element.
-      function attachTether() {
-        tether = new Tether(extend({
-          element: element[0]
-        }, config.tether));
-      }
+      var tether = {
+        enter: enter,
+        leave: leave,
+        active: false,
+        config: config.tether
+      };
 
-      function templateDfd() {
-        var template =  config.template
-          ? $templateCache.get(config.template) || config.template
-          : $http.get(config.templateUrl, {cache: $templateCache}).then(function(resp){return resp.data});
+      // backward compatible method until next major version is released
+      tether.isActive = function() {
+        return tether.active;
+      };
+
+      function templateDeferred() {
+        var template;
+
+        if (config.template) {
+          template = $templateCache.get(config.template) || config.template;
+        } else {
+          template = $http.get(config.templateUrl, {cache: $templateCache}).then(function(resp) {
+            return resp.data;
+          });
+        }
 
         return $q.when(template);
       }
 
       function create(html, locals) {
+        var ctrl;
         element = angular.element(html.trim());
+
+        tether.tetherInstance = new Tether(extend({
+          element: element[0]
+        }, config.tether));
+
         scope = parentScope.$new();
 
         // assign locals being passed on enter method.
         if (locals) {
-          for (var prop in locals) {
-            scope[prop] = locals[prop];
+          for (var key in locals) {
+            if (locals.hasOwnProperty(key)) {
+              scope[key] = locals[key];
+            }
           }
         }
 
         if (config.controller) {
-          var ctrl = $controller(controller, { $scope: scope });
+          ctrl = $controller(controller, {$scope: scope});
         }
+
         if (controllerAs) {
           scope[controllerAs] = ctrl;
         }
 
         $compile(element)(scope);
-        scope.$on('$destroy', destroy);
 
-        // Hack. html is being compiled asynchronously the dimensions of the element
-        // would most likley have a different dimensions after compilation
-        $timeout(function () {
-          if(!element) return;
+        tether.active = true;
 
-          $animate.enter(element, bodyEl);
+        scope.$watch(function() {
+          tether.tetherInstance.position();
+        });
 
-          attachTether();
-          tether.position();
-
+        // prevents document instant click fire. there's no need to run digest cycle.
+        setTimeout(function(){
           if (config.leaveOnBlur) {
-            bodyEl.on('click touchend', leaveOnBlur);
+            $document.on('click touchend', leaveOnBlur);
           }
+        }, 0);
 
-        }, 15)
+
+        activeAnimatePromise = $animate.enter(element, $document.find('body'));
+
+        return activeAnimatePromise;
       }
 
       function leaveOnBlur(evt) {
         var target = evt.target;
-        if (!element || target === element[0]) {return;}
+        if (tether.active === false || target === element[0]) {
+          return;
+        }
+
         while (target.parentElement !== null) {
-          if (target.parentElement == element[0]) {
-            return
+          if (target.parentElement === element[0]) {
+            return;
           }
           target = target.parentElement;
         }
-        return leave();
+        scope.$applyAsync(leave);
       }
+
 
       // Attach tether and add it to the dom
       function enter(locals) {
-        if(element) {
-          return $log.debug('Tethered instance is already active; now toggling')
+        if (tether.active) {
+          leave();
         }
-        templateDfd().then(function (html) {
-          create(html, locals);
+
+        return templateDeferred().then(function(html) {
+          return create(html, locals);
         });
       }
 
       // Detach the tether and remove it from the dom
       function leave() {
+        if (tether.active === false) {
+          return $q.when(tether.active);
+        }
+
         if (config.leaveOnBlur) {
-          bodyEl.off('click touchend', leaveOnBlur);
+          $document.off('click touchend', leaveOnBlur);
         }
 
-        if (!isActive()) {
-          if (element) {
-            element = null;
-          }
-          return false;
-        }
-        tether.destroy();
+        tether.active = false;
+        tether.tetherInstance.destroy();
+        scope.$destroy();
 
-        $timeout(function () {
-          element && $animate.leave(element, function () {
-            destroy()
-          });
-        });
+        return $animate.leave(element);
       }
 
-      function destroy() {
-        if (!element) {return;}
-        element.remove();
-        element = null;
-      }
-
-      function position() {
-        if (element) {
-          $animate.move(element, bodyEl);
-          attachTether();
-        }
-      }
-
-      // bool. is tethered instance got destroyed
-      function isActive() {
-        return tether && tether.enabled;
-      }
-
-      return {
-        enter: enter,
-        leave: leave,
-        position: position,
-        isActive: isActive,
-        tether: html,
-        config : config.tether
-      };
+      return tether;
     };
-  });
-
-
+  }
+}(Tether, angular));

@@ -1,15 +1,18 @@
+(function(){
 
-angular.module('ngTetherPopover', ['ngTether'])
-  .directive('tetherPopover', function (Tether, $parse, Utils) {
+  angular.module('ngTetherPopover', ['ngTether'])
+      .directive('tetherPopover', tetherPopoverDirective);
+
+  function tetherPopoverDirective(Tether, TetherUtils) {
     return {
       restrict: 'A',
       scope: {
         tetherPopover: '=',
         config: '='
       },
-      link: function postLink(scope, elem, attrs) {
+      link: function postLink(scope, elem) {
 
-        scope.tetherPopover = new Tether(Utils.extendDeep({
+        scope.tetherPopover = new Tether(TetherUtils.extendDeep({
           parentScope: scope.$parent,
           leaveOnBlur: true,
           tether : {
@@ -24,20 +27,9 @@ angular.module('ngTetherPopover', ['ngTether'])
             ]
           }
         }, scope.config));
-        
-        scope.$watch('tetherPopover.config.targetAttachment', function(){
-          if (scope.tetherPopover.isActive()) {
-            scope.tetherPopover.position()
-          }
-        }, true);
-
-        scope.$watch('tetherPopover.config.attachment', function(){
-          if (scope.tetherPopover.isActive()) {
-            scope.tetherPopover.position()
-          }
-        }, true);
-
 
       }
     };
-  });
+  }
+
+}());
