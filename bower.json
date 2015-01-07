@@ -30,5 +30,8 @@
     "angular",
     "angular-tooltip"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "angular-tether": "~0.2.0"
+  }
 }

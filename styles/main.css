@@ -809,7 +809,10 @@ blockquote {
     white-space: nowrap;
     -webkit-border-radius: 3px;
     border-radius: 3px; }
-
+.tooltip {
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
 .Tooltip__top:before {
   border-top-color: #0c7586; }
 
