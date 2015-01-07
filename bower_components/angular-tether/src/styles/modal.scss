@@ -1,0 +1,80 @@
+//
+// Modals
+// --------------------------------------------------
+
+// Background
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  zoom: 1;
+  padding: 10px;
+
+  background: rgba(255, 255, 255, 0.85);
+
+  // incase of an overflow a scroll will appear
+  overflow-y: auto;
+
+  -webkit-backface-visibility: hidden;
+
+  // Increase z-index after the next modal
+  + .modal-wrapper {
+    z-index: 1010;
+    // and the next after that
+    + .modal-wrapper {
+      z-index: 1020;
+      + .modal-wrapper {
+        z-index: 1030;
+      }
+    }
+  }
+  &.animate .modal-container {
+    @include animation(slideUp .35s ease-in forwards);
+  }
+  .cc {
+    .ccc {
+      max-width: 100%;
+    }
+  }
+}
+
+// Base modal
+.modal-container {
+  position: relative;
+  outline: none;
+  background-color: $white;
+  @include background-clip(padding-box);
+  min-width: 250px;
+  box-shadow: 0px 0px 0px 1px rgb(211, 211, 211);
+
+}
+
+.modal-header {
+  padding: 3px 13px;
+  @include gradient-vertical(#dcdcdc, #e3e3e3);
+  background-color: #E2E2E2;
+  // Heading
+  h3 {
+    margin: 0;
+    line-height: 30px;
+  }
+}
+
+// Body (where all modal content resides)
+.modal-body {
+  padding: 15px;
+  position: relative;
+}
+
+// Footer (for actions)
+.modal-footer {
+  position: relative;
+  padding: 13px 15px;
+  @include box-sizing(border-box);
+  margin-bottom: 0;
+  text-align: #{htmlDirection-rev()};
+  border-top: 1px solid #d1d1d1;
+}

@@ -1,0 +1,200 @@
+/*
+	==== Strings Dev-draft =======================================
+	     Author: Nissan Hanina
+	==============================================================
+*/
+
+@import "strings/defaults";
+@import "modal";
+
+
+// Scaffolding
+// -------------------------
+$bodyBackground: #FBFBFB;
+
+
+// Site direction
+// -----------------
+$htmlDirection: ltr;
+
+
+$baseFontSize: 16px;
+
+body {
+  margin: 0;
+  font-family: $baseFontFamily;
+  font-size: $baseFontSize;
+  line-height: $baseLineHeight;
+  background-color: $bodyBackground;
+  font-weight: 300;
+  color: $textColor;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  @if ($htmlDirection == rtl) {
+    direction: rtl;
+  }
+}
+
+// Links
+// -------------------------
+
+a {
+  color: $linkColor;
+  text-decoration: none;
+  &:hover {
+    color: $linkColorHover;
+    text-decoration: none;
+  }
+}
+
+p a:hover {
+  color: $linkColorHover;
+  text-decoration: underline;
+}
+
+
+::-webkit-scrollbar {
+  border: 1px solid #E6E6E6;
+  width: 8px;
+  height: 8px;
+  padding: 0 2px;
+  background-color: #F1F1F1;
+}
+
+::-webkit-scrollbar-track {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(146, 146, 146, 0.80);
+  &:hover {
+    background-color: rgba(82, 82, 82, 0.80);
+  }
+}
+
+html {
+  height: 100% !important;
+}
+
+
+
+
+
+
+@include spaceBox("tiny", "5px");
+@include spaceBox("small", "10px");
+@include spaceBox("regular", "20px");
+@include spaceBox("medium", "30px");
+@include spaceBox("large", "50px");
+
+
+@include btn('btn-ghost') {
+  color: #888888;
+  background-color: #DCDCDC;
+  box-shadow: 0px -1px 0 0 rgba(255, 255, 255, 0.5),
+              0px -1px 0 0 rgba(0, 0, 0, 0.1) inset;
+
+
+  @include border-radius(9px);
+  -webkit-backface-visibility: hidden;
+  @include transition(
+          background-color .3s ease,
+          border .3s ease
+  );
+  &:hover, &:focus {
+    background-color: #e4e4e4;
+  }
+  &[disabled] {
+    opacity: 0.3;
+    cursor: default;
+  }
+  &.active {
+    background-color: #d1d1d1;
+  }
+}
+
+@include field('field', 28px) {
+  border: 1px solid #8da5ae;
+  background-color: transparent;
+  color: #262626;
+  @include border-radius(4px);
+  @include transition(border-color .3s ease);
+  &:focus {
+    border-color: #b2d0d9;
+  }
+}
+
+
+
+.main-intro {
+  min-height: 100%;
+}
+
+.fade-anim {
+  &.ng-enter, &.ng-leave {
+    -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+    transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  }
+
+  &.ng-enter, &.ng-leave.ng-leave-active {
+    opacity:0;
+  }
+  &.ng-leave, &.ng-enter.ng-enter-active {
+    opacity:1;
+  }
+}
+
+
+
+.flipInFade {
+  @include transition(all .15s ease);
+  @include transform-origin(50% 0);
+  @include transform(perspective(300) rotateX(-25deg));
+  opacity: 0;
+  visibility: hidden;
+  &.active {
+    @include transform(perspective(300) rotateX(0deg));
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.block-light-bordered {
+  max-width: 325px;
+  background-color: #f8f8f8;
+  padding: 15px;
+  border: 1px solid #dfdfdf;
+  z-index: 1050;
+}
+
+
+
+.angular-tether-arrow {
+  &.tether-element-attached-center.tether-element-attached-top.tether-target-attached-center.tether-target-attached-bottom {
+    margin-top: 10px;
+    @include arrow('top', #f8f8f8, $border-color: #dfdfdf, $width: 7px, $isCenter: true);
+  }
+  &.tether-element-attached-center.tether-target-attached-center.tether-element-attached-bottom.tether-target-attached-top, {
+    margin-top: -10px;
+    @include arrow('bottom', #f8f8f8, $border-color: #dfdfdf, $width: 7px, $isCenter: true);
+  }
+  &.tether-element-attached-middle.tether-element-attached-left.tether-target-attached-middle.tether-target-attached-right, {
+    @include arrow('left', #f8f8f8, $border-color: #dfdfdf, $width: 7px, $isCenter: true);
+    margin-left: 10px;
+  }
+  &.tether-element-attached-right.tether-element-attached-middle.tether-target-attached-left.tether-target-attached-middle, {
+    @include arrow('right', #f8f8f8, $border-color: #dfdfdf, $width: 7px, $isCenter: true);
+    margin-left: -10px;
+  }
+}
+.ace_editor {
+  height: 180px;
+}
+
+.tooltip {
+  border: 1px solid red;
+  background-color: blue;
+}
