@@ -60,7 +60,7 @@ angular.module('app', ['ng', 'ngAnimate', 'ngTetherTooltip', 'ngTetherPopover', 
           tetherOptions: '='
         },
         link: function(scope, elm){
-          Tether({
+          new Tether({
             templateUrl: 'intro.html',
             tether: angular.extend({
                   target: elm[0],

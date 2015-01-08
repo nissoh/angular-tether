@@ -87,24 +87,12 @@
   function tetherInstanceDirective($compile, $rootScope, $document, $templateCache, $animate, $controller, $q, $http) {
     return function (config) {
       'use strict';
-      if (!(config.template || config.templateUrl)) {
-        throw new Error('Expected one of either `template` or `templateUrl`');
-      }
       if (!Tether) {
         throw new Error('Tether is required`');
       }
       config.tether = config.tether || {};
-      var controller = config.controller || angular.noop, controllerAs = config.controllerAs, parentScope = config.parentScope || $rootScope, extend = angular.extend, element = null, scope, activeAnimatePromise;
-      var tether = {
-          enter: enter,
-          leave: leave,
-          active: false,
-          config: config.tether
-        };
-      // backward compatible method until next major version is released
-      tether.isActive = function () {
-        return tether.active;
-      };
+      var element = null, scope, tether = this;
+      ;
       function templateDeferred() {
         var template;
         if (config.template) {
@@ -117,9 +105,10 @@
         return $q.when(template);
       }
       function create(html, locals) {
-        var ctrl;
+        var ctrl, parentScope = config.parentScope || $rootScope;
+        ;
         element = angular.element(html.trim());
-        tether.tetherInstance = new Tether(extend({ element: element[0] }, config.tether));
+        tether.tetherInstance = new Tether(angular.extend({ element: element[0] }, config.tether));
         scope = parentScope.$new();
         // assign locals being passed on enter method.
         if (locals) {
@@ -130,10 +119,10 @@
           }
         }
         if (config.controller) {
-          ctrl = $controller(controller, { $scope: scope });
+          ctrl = $controller(config.controller, { $scope: scope });
         }
-        if (controllerAs) {
-          scope[controllerAs] = ctrl;
+        if (config.controllerAs) {
+          scope[config.controllerAs] = ctrl;
         }
         $compile(element)(scope);
         tether.active = true;
@@ -146,8 +135,7 @@
             $document.on('click touchend', leaveOnBlur);
           }
         }, 0);
-        activeAnimatePromise = $animate.enter(element, $document.find('body'));
-        return activeAnimatePromise;
+        return $animate.enter(element, tether.tetherInstance.target.parentNode, tether.tetherInstance.target);
       }
       function leaveOnBlur(evt) {
         var target = evt.target;
@@ -160,19 +148,22 @@
           }
           target = target.parentElement;
         }
-        scope.$applyAsync(leave);
+        scope.$applyAsync(tether.leave);
       }
       // Attach tether and add it to the dom
-      function enter(locals) {
+      tether.enter = function enter(locals) {
+        if (!(config.template || config.templateUrl)) {
+          throw new Error('Expected one of either `template` or `templateUrl`');
+        }
         if (tether.active) {
-          leave();
+          tether.leave();
         }
         return templateDeferred().then(function (html) {
           return create(html, locals);
         });
-      }
+      };
       // Detach the tether and remove it from the dom
-      function leave() {
+      tether.leave = function leave() {
         if (tether.active === false) {
           return $q.when(tether.active);
         }
@@ -183,7 +174,13 @@
         tether.tetherInstance.destroy();
         scope.$destroy();
         return $animate.leave(element);
-      }
+      };
+      // backward compatible method until next major version is released
+      tether.isActive = function () {
+        return tether.active;
+      };
+      tether.active = false;
+      tether.config = config.tether;
       return tether;
     };
   }
