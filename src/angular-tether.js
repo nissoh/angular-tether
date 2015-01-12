@@ -100,6 +100,10 @@
           tether.tetherInstance.position();
         });
 
+        scope.$on('$destroy', function(){
+          scope.$applyAsync(tether.leave);
+        });
+
         // prevents document instant click fire. there's no need to run digest cycle.
         setTimeout(function(){
           if (config.leaveOnBlur) {
@@ -113,6 +117,7 @@
       function leaveOnBlur(evt) {
         var target = evt.target;
         if (tether.active === false || target === element[0]) {
+          target = null;
           return;
         }
 
@@ -159,7 +164,7 @@
       };
 
       // backward compatible method until next major version is released
-      tether.isActive = function() {
+      tether.isActive = function isActive() {
         return tether.active;
       };
 
