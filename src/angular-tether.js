@@ -96,22 +96,24 @@
 
         tether.active = true;
 
-        scope.$watch(function() {
+          scope.$on('$destroy', function () {
+              scope.$applyAsync(tether.leave);
+          });
+
+          // reposition on next cycle
+          scope.$applyAsync(function () {
+              tether.tetherInstance.position();
+              if (config.leaveOnBlur) {
+                  // prevents document instant click fire. there's no need to run digest cycle.
+                  $document.on('click touchend', leaveOnBlur);
+              }
+              scope.$watch(tether.tetherInstance.position);
+          });
+
+          var animatePromise = $animate.enter(element, tether.tetherInstance.target.parentNode, tether.tetherInstance.target);
+
           tether.tetherInstance.position();
-        });
-
-        scope.$on('$destroy', function(){
-          scope.$applyAsync(tether.leave);
-        });
-
-        // prevents document instant click fire. there's no need to run digest cycle.
-        setTimeout(function(){
-          if (config.leaveOnBlur) {
-            $document.on('click touchend', leaveOnBlur);
-          }
-        }, 0);
-
-        return $animate.enter(element, tether.tetherInstance.target.parentNode, tether.tetherInstance.target);
+          return animatePromise;
       }
 
       function leaveOnBlur(evt) {

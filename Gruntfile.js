@@ -41,13 +41,12 @@ module.exports = function (grunt) {
       }
     },
     connect: {
-      dev: {
         options: {
-          livereload : 9913,
-          port: 3000,
-          hostname: 'localhost'
-        }
-      }
+            livereload: 9913,
+            port: 3000,
+            hostname: 'localhost'
+        },
+        dev: {}
     },
     release: {
       options: {
